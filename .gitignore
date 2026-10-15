@@ -1,0 +1,8 @@
+.env
+node_modules/
+temp/
+data.json
+bot.pid
+*.log
+setup.sh
+sync.sh

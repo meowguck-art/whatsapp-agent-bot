@@ -81,7 +81,7 @@ module.exports = {
     const userId = msg.from;
     const sub = args[0]?.toLowerCase();
 
-    if (sub === 'בטל') {
+    if (sub === 'בטל' || sub === 'cancel') {
       db.update(d => { delete d.blackjack[userId]; });
       return client.sendMessage(userId, t('games.blackjack.cancel'));
     }
@@ -169,13 +169,13 @@ module.exports = {
   async tictactoe(client, msg, args) {
     const userId = msg.from;
     const sub = args[0]?.toLowerCase();
-    if (sub === 'בטל') {
+    if (sub === 'בטל' || sub === 'cancel') {
       db.update(d => { delete d.tictactoe[userId]; });
       return client.sendMessage(userId, t('games.tictactoe.cancel'));
     }
 
     let game = db.get().tictactoe[userId];
-    if (!game || sub === 'התחל') {
+    if (!game || sub === 'התחל' || sub === 'start') {
       game = { board: Array(9).fill(' '), active: true };
       db.update(d => { d.tictactoe[userId] = game; });
       return client.sendMessage(userId, t('games.tictactoe.start', { board: renderBoard(game.board) }));
@@ -275,7 +275,7 @@ module.exports.hangman = async function(client, msg, args) {
   const userId = msg.from;
   const letter = args[0]?.trim();
 
-  if (letter === 'בטל') {
+  if (letter === 'בטל' || letter.toLowerCase() === 'cancel') {
     db.update(d => { delete d.hangman[userId]; });
     return client.sendMessage(userId, t('games.hangman.cancel'));
   }
@@ -435,7 +435,7 @@ module.exports.battle = async function(client, msg, args) {
   const userId = msg.from;
   const action = args[0]?.toLowerCase();
 
-  if (action === 'בטל') {
+  if (action === 'בטל' || action === 'cancel') {
     db.update(d => { delete d.battle[userId]; });
     return client.sendMessage(userId, t('games.battle.cancel'));
   }
@@ -448,11 +448,11 @@ module.exports.battle = async function(client, msg, args) {
   }
 
   let log = '';
-  if (action === 'התקפה') {
+  if (action === 'התקפה' || action === 'attack') {
     const dmg = Math.floor(Math.random() * 10) + 15;
     b.botHp -= dmg;
     log += t('games.battle.attackLog', { dmg });
-  } else if (action === 'מיוחד') {
+  } else if (action === 'מיוחד' || action === 'special') {
     if (Math.random() < 0.6) {
       const dmg = Math.floor(Math.random() * 20) + 25;
       b.botHp -= dmg;
@@ -460,7 +460,7 @@ module.exports.battle = async function(client, msg, args) {
     } else {
       log += t('games.battle.specialMiss');
     }
-  } else if (action === 'ריפוי') {
+  } else if (action === 'ריפוי' || action === 'heal') {
     b.playerHp = Math.min(100, b.playerHp + 25);
     log += t('games.battle.heal', { amount: 25 });
   } else {
@@ -523,7 +523,7 @@ function raceBar(player, bot) {
 
 module.exports.race = async function(client, msg, args) {
   const userId = msg.from;
-  if (args[0]?.toLowerCase() === 'בטל') {
+  if (['בטל', 'cancel'].includes(args[0]?.toLowerCase())) {
     db.update(d => { delete d.race[userId]; });
     return client.sendMessage(userId, t('games.race.cancel'));
   }

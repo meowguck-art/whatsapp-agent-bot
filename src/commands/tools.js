@@ -147,7 +147,7 @@ module.exports = {
     const sub = args[0]?.toLowerCase();
     const rest = args.slice(1).join(' ').trim();
 
-    if (sub === 'הוסף') {
+    if (sub === 'הוסף' || sub === 'add') {
       if (!rest) return client.sendMessage(userId, t('tools.todo.addUsage'));
       db.update(d => {
         if (!Array.isArray(d.todos[userId])) d.todos[userId] = [];
@@ -156,7 +156,7 @@ module.exports = {
       return client.sendMessage(userId, t('tools.todo.added', { item: rest }));
     }
 
-    if (sub === 'מחק') {
+    if (sub === 'מחק' || sub === 'del' || sub === 'delete') {
       const idx = parseInt(rest, 10) - 1;
       const list = db.get().todos[userId] || [];
       if (isNaN(idx) || idx < 0 || idx >= list.length) {
@@ -169,7 +169,7 @@ module.exports = {
       return client.sendMessage(userId, t('tools.todo.removed', { item: removed }));
     }
 
-    if (sub === 'נקה') {
+    if (sub === 'נקה' || sub === 'clear') {
       db.update(d => { d.todos[userId] = []; });
       return client.sendMessage(userId, t('tools.todo.cleared'));
     }

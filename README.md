@@ -28,56 +28,56 @@ The project is built according to the WhatsApp Agent Platform v1 API spec. It in
 ## 🚀 Commands & Features
 
 ### 🧠 AI (Google Gemini)
-* `!שאל [question]` - Free-form AI chat and Q&A.
-* `!סכם` - Summarize long messages and texts (works directly or as a reply).
-* `!דמיין [description]` - Generate a detailed professional English prompt for image generators.
-* `!תרגם [language] [text]` - Accurate translation into any language.
+* `!ask [question]` - Free-form AI chat and Q&A.
+* `!summarize` - Summarize long messages and texts (works directly or as a reply).
+* `!imagine [description]` - Generate a detailed professional English prompt for image generators.
+* `!translate [language] [text]` - Accurate translation into any language.
 
 ### 🎬 Media & Downloads
-* `!יוטיוב [song]` - Search and download songs from YouTube as playable MP3 files.
-* `!טיקטוק [link]` - Download TikTok videos in max quality, no watermark.
-* `!אינסטה [link]` - Download Instagram Reels.
-* `!חתוך [start] [end]` - Trim a song or video in reply to a message (e.g. `!חתוך 00:10 00:40`).
-* `!סטיקר` or `!s` - Turn a photo or short video into a transparent 512x512 WebP sticker.
-* `!פילטר [שחורלבן/נגטיב/טשטוש]` - Fast image processing with FFmpeg.
-* `!למי` or `!tofile` - Send media as a document to preserve original quality without compression.
+* `!youtube [song]` - Search and download songs from YouTube as playable MP3 files.
+* `!tiktok [link]` - Download TikTok videos in max quality, no watermark.
+* `!insta [link]` - Download Instagram Reels.
+* `!cut [start] [end]` - Trim a song or video in reply to a message (e.g. `!cut 00:10 00:40`).
+* `!sticker` - Turn a photo or short video into a transparent 512x512 WebP sticker.
+* `!filter [bw/negative/blur]` - Fast image processing with FFmpeg.
+* `!tofile` or `!tofile` - Send media as a document to preserve original quality without compression.
 * `!qr [text/link]` - High-quality scannable QR code generator.
 
 ### 🛠️ Tools & Daily Info
-* `!מזגאוויר [city]` - Live weather forecast (temperature, wind and sky conditions).
-* `!חדשות` - Top 5 breaking news flashes in Israel (Ynet).
-* `!שער` - Current USD, EUR, Bitcoin and Ethereum rates in shekels.
-* `!שבת [city]` - Shabbat candle-lighting and havdalah times plus the weekly Torah portion.
-* `!רשימה [הוסף/מחק/הצג/נקה]` - Manage a personal shopping or task list, saved persistently.
-* `!תזכורת [time] [דק/שע/ימ] [message]` - Personal reminders that survive bot restarts.
-* `!בחר [option 1, option 2...]` - Random picker / decision wheel.
-* `!קיצור [link]` - Shorten long URLs via TinyURL.
-* `!לינק [number]` - Direct WhatsApp chat link without saving the contact.
-* `!מחשבון [expression]` - Solve math expressions.
-* `!חיפוש [query]` - Direct Google search link.
+* `!weather [city]` - Live weather forecast (temperature, wind and sky conditions).
+* `!news` - Top 5 breaking news flashes in Israel (Ynet).
+* `!rates` - Current USD, EUR, Bitcoin and Ethereum rates in shekels.
+* `!shabbat [city]` - Shabbat candle-lighting and havdalah times plus the weekly Torah portion.
+* `!todo [add/del/show/clear]` - Manage a personal shopping or task list, saved persistently.
+* `!reminder [time] [m/h/d] [message]` - Personal reminders that survive bot restarts.
+* `!choose [option 1, option 2...]` - Random picker / decision wheel.
+* `!shorten [link]` - Shorten long URLs via TinyURL.
+* `!link [number]` - Direct WhatsApp chat link without saving the contact.
+* `!calc [expression]` - Solve math expressions.
+* `!search [query]` - Direct Google search link.
 
 ### 🎮 Games & Community
-* `!בלקג'ק` - Blackjack against the bot (`!קלף`, `!עמוד`).
-* `!קרב [התקפה/מיוחד/ריפוי]` - Turn-based RPG battle against the bot with an HP bar.
-* `!תלוי [letter]` - Interactive Hebrew hangman.
-* `!חידון` / `!ניחוש [name]` - Emoji quiz: guess famous movies.
-* `!איקסעיגול [1-9]` - Tic-tac-toe against the bot.
-* `!טריוויה` / `!תשובה [1-4]` - American-style trivia questions.
-* `!קובייה` / `!מטבע` - Roll a dice or flip a coin.
-* `!בדיחה` / `!ציטוט` / `!הפוך` - Quick fun.
-* `!תודה` - Give a reputation point to another user (reply to their message).
-* `!מוניטין` / `!טופ5` - Personal score and leaderboard.
+* `!blackjack` - Blackjack against the bot (`!hit`, `!stand`).
+* `!battle [attack/special/heal]` - Turn-based RPG battle against the bot with an HP bar.
+* `!hangman [letter]` - Interactive Hebrew hangman.
+* `!quiz` / `!guess [name]` - Emoji quiz: guess famous movies.
+* `!tictactoe [1-9]` - Tic-tac-toe against the bot.
+* `!trivia` / `!answer [1-4]` - American-style trivia questions.
+* `!dice` / `!coin` - Roll a dice or flip a coin.
+* `!joke` / `!quote` / `!reverse` - Quick fun.
+* `!thanks` - Give a reputation point to another user (reply to their message).
+* `!rep` / `!top` - Personal score and leaderboard.
 
 ### 👑 System & Admin
-* `!תפריט` - Smart control panel split across 5 pages (`!1` to `!5`).
-* `!פינג` - Bot response time in ms.
-* `!אני` - Show your account details and ID.
-* `!ויקיפדיה [term]` - Fetch a Hebrew Wikipedia summary.
-* `!שעה` / `!תאריך` - Local Israel time and date.
-* `!סטטוס` - Uptime and bot status (owner only).
-* `!גרסה` / `!בעלים` - Version and developer info.
-* `!שנהמצב [self/authorized/public]` - Change the bot's access level.
-* `!הוסףמורשהגלובלי` / `!הסרמורשהגלובלי` / `!רשימהגלובלית` - Manage VIP users.
+* `!menu` - Smart control panel split across 5 pages (`!1` to `!5`).
+* `!ping` - Bot response time in ms.
+* `!me` - Show your account details and ID.
+* `!wiki [term]` - Fetch a Hebrew Wikipedia summary.
+* `!time` / `!date` - Local Israel time and date.
+* `!status` - Uptime and bot status (owner only).
+* `!version` / `!owner` - Version and developer info.
+* `!setmode [self/authorized/public]` - Change the bot's access level.
+* `!addauth` / `!removeauth` / `!listauth` - Manage VIP users.
 
 ---
 
@@ -121,7 +121,7 @@ BOT_LANG=he
 ### 🌐 Language
 The bot speaks **Hebrew** by default. Set `BOT_LANG=en` in `.env` to switch all
 bot messages, menus, games and errors to **English**. Command names themselves
-(e.g. `!שאל`, `!יוטיוב`) stay the same in both languages.
+(e.g. `!ask`, `!youtube`) stay the same in both languages.
 
 ### 4. Start the bot:
 ```bash

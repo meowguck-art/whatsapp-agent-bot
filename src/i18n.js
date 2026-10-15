@@ -364,82 +364,82 @@ Hello! Choose a category to see its commands:
 5️⃣ 👑 *System & Admin*
 
 ━━━━━━━━━━━━━━━━━━━━━━
-💬 *Send \`!1\` to \`!5\` (or \`!תפריט [number]\`) to view a page.*`,
+💬 *Send \`!1\` to \`!5\` (or \`!menu [number]\`) to view a page.*`,
     'menu.p1':
 `━━━━━━━━━━━━━━━━━━━━━━
    🧠 *Artificial Intelligence (AI)* 🧠
 ━━━━━━━━━━━━━━━━━━━━━━
-▫️ \`!שאל [question]\` • Free chat with Gemini
-▫️ \`!סכם\` • Summarize texts (as a reply)
-▫️ \`!דמיין [description]\` • Generate a detailed image description
-▫️ \`!תרגם [language] [text]\` • Quick translation to any language
+▫️ \`!ask [question]\` • Free chat with Gemini
+▫️ \`!summarize\` • Summarize texts (as a reply)
+▫️ \`!imagine [description]\` • Generate a detailed image description
+▫️ \`!translate [language] [text]\` • Quick translation to any language
 
 {back}`,
     'menu.p2':
 `━━━━━━━━━━━━━━━━━━━━━━
    🎬 *Media, Songs & Downloads* 🎬
 ━━━━━━━━━━━━━━━━━━━━━━
-▫️ \`!טיקטוק [link]\` • Download video without watermark
-▫️ \`!אינסטה [link]\` • Download Reels
-▫️ \`!יוטיוב [song]\` • YouTube search: 10 results to pick, then MP3 / voice note / clip
-▫️ \`!חתוך [start] [end]\` • Trim song/video as a reply
-▫️ \`!פילטר [שחורלבן/נגטיב/טשטוש]\` • Image processing
+▫️ \`!tiktok [link]\` • Download video without watermark
+▫️ \`!insta [link]\` • Download Reels
+▫️ \`!youtube [song]\` • YouTube search: 10 results to pick, then MP3 / voice note / clip
+▫️ \`!cut [start] [end]\` • Trim song/video as a reply
+▫️ \`!filter [bw/negative/blur]\` • Image processing
 ▫️ \`!qr [text/link]\` • High-quality QR code
-▫️ \`!סטיקר\` / \`!s\` • Turn photo/video into a sticker
-▫️ \`!למי\` / \`!tofile\` • Send media as an uncompressed document
+▫️ \`!sticker\` / \`!s\` • Turn photo/video into a sticker
+▫️ \`!tofile\` / \`!tofile\` • Send media as an uncompressed document
 
 {back}`,
     'menu.p3':
 `━━━━━━━━━━━━━━━━━━━━━━
    🛠️ *Tools, Info & Daily* 🛠️
 ━━━━━━━━━━━━━━━━━━━━━━
-▫️ \`!מזגאוויר [city]\` • Live weather forecast
-▫️ \`!חדשות\` • 5 latest flashes from Ynet
-▫️ \`!שער\` • Dollar, euro, bitcoin and ethereum rates
-▫️ \`!שבת [city]\` • Shabbat times and parasha
-▫️ \`!רשימה [הוסף/מחק/נקה]\` • Shopping/task list
-▫️ \`!תזכורת [time] [דק/שע/ימ] [message]\` • Set a reminder
-▫️ \`!בחר [option 1, 2...]\` • Decision wheel
-▫️ \`!קיצור [link]\` • Shorten a URL via TinyURL
-▫️ \`!לינק [number]\` • Direct WhatsApp chat link
-▫️ \`!מחשבון [expression]\` • Solve a math expression
-▫️ \`!חיפוש [query]\` • Direct Google search link
+▫️ \`!weather [city]\` • Live weather forecast
+▫️ \`!news\` • 5 latest flashes from Ynet
+▫️ \`!rates\` • Dollar, euro, bitcoin and ethereum rates
+▫️ \`!shabbat [city]\` • Shabbat times and parasha
+▫️ \`!todo [add/del/clear]\` • Shopping/task list
+▫️ \`!reminder [time] [m/h/d] [message]\` • Set a reminder
+▫️ \`!choose [option 1, 2...]\` • Decision wheel
+▫️ \`!shorten [link]\` • Shorten a URL via TinyURL
+▫️ \`!link [number]\` • Direct WhatsApp chat link
+▫️ \`!calc [expression]\` • Solve a math expression
+▫️ \`!search [query]\` • Direct Google search link
 
 {back}`,
     'menu.p4':
 `━━━━━━━━━━━━━━━━━━━━━━
    🎮 *Games, Fun & Community* 🎮
 ━━━━━━━━━━━━━━━━━━━━━━
-▫️ \`!בלקג'ק\` • 21 against the bot (\`!קלף\` / \`!עמוד\`)
-▫️ \`!קרב\` • Turn-based RPG battle (\`!קרב התקפה\`)
-▫️ \`!תלוי [letter]\` • Hebrew hangman
-▫️ \`!חידון\` • Emoji quiz (\`!ניחוש [name]\`)
-▫️ \`!איקסעיגול [1-9]\` • Tic-tac-toe vs the bot
-▫️ \`!מרוץ\` • Snakes & ladders race to 100 (\`!זרוק\` to roll)
-▫️ \`!טריוויה\` • American trivia question (\`!תשובה\`)
-▫️ \`!קובייה\` / \`!מטבע\` • Roll a dice or a coin
-▫️ \`!בדיחה\` / \`!ציטוט\` / \`!הפוך\` • Quick fun
-▫️ \`!תודה\` • Give a reputation point (as a reply)
-▫️ \`!מוניטין\` / \`!טופ5\` • Top score tables
+▫️ \`!blackjack\` • 21 against the bot (\`!hit\` / \`!stand\`)
+▫️ \`!battle\` • Turn-based RPG battle (\`!battle attack\`)
+▫️ \`!hangman [letter]\` • Hebrew hangman
+▫️ \`!quiz\` • Emoji quiz (\`!guess [name]\`)
+▫️ \`!tictactoe [1-9]\` • Tic-tac-toe vs the bot
+▫️ \`!race\` • Snakes & ladders race to 100 (\`!roll\` to roll)
+▫️ \`!trivia\` • American trivia question (\`!answer\`)
+▫️ \`!dice\` / \`!coin\` • Roll a dice or a coin
+▫️ \`!joke\` / \`!quote\` / \`!reverse\` • Quick fun
+▫️ \`!thanks\` • Give a reputation point (as a reply)
+▫️ \`!rep\` / \`!top\` • Top score tables
 
 {back}`,
     'menu.p5':
 `━━━━━━━━━━━━━━━━━━━━━━
    👑 *System & Bot Admin* 👑
 ━━━━━━━━━━━━━━━━━━━━━━
-▫️ \`!פינג\` • Bot response time check
-▫️ \`!אני\` • Your account details and ID
-▫️ \`!ויקיפדיה [term]\` • Wikipedia summary
-▫️ \`!שעה\` / \`!תאריך\` • Israel clock and date
-▫️ \`!סטטוס\` • Uptime and bot status (owner)
-▫️ \`!גרסה\` • System version info
-▫️ \`!בעלים\` • Bot owner ID
-▫️ \`!שנהמצב [self/authorized/public]\` • Access level
-▫️ \`!הוסףמורשהגלובלי\` / \`!הסרמורשהגלובלי\`
-▫️ \`!רשימהגלובלית\` • View the VIP list
+▫️ \`!ping\` • Bot response time check
+▫️ \`!me\` • Your account details and ID
+▫️ \`!wiki [term]\` • Wikipedia summary
+▫️ \`!time\` / \`!date\` • Israel clock and date
+▫️ \`!status\` • Uptime and bot status (owner)
+▫️ \`!version\` • System version info
+▫️ \`!owner\` • Bot owner ID
+▫️ \`!setmode [self/authorized/public]\` • Access level
+▫️ \`!addauth\` / \`!removeauth\`
+▫️ \`!listauth\` • View the VIP list
 
 {back}`,
-    'menu.back': '_Back to the main menu: send `!תפריט`_',
+    'menu.back': '_Back to the main menu: send `!menu`_',
 
     // ---- interactive buttons demo ----
     'general.buttons.title': '🤖 *Interactive Buttons Demo*\nTap a button — each one runs a real bot command:',
@@ -449,7 +449,7 @@ Hello! Choose a category to see its commands:
     'general.buttons.footer': 'Sent directly, no approved template ✨',
     'general.buttons.callBody': '📞 *Need human help?*\nTap the button to start a WhatsApp voice call:',
     'general.buttons.callNow': 'Call now',
-    'general.buttons.unsupported': '⚠️ *Clickable buttons are not supported yet*\nWhatsApp\'s Agent platform (which this bot runs on) currently allows only text and media — no buttons and no call button.\nThe code is ready, and once WhatsApp enables it this will work automatically.\n\nMeanwhile: send `!תפריט` and pick a number from the menu 👆',
+    'general.buttons.unsupported': '⚠️ *Clickable buttons are not supported yet*\nWhatsApp\'s Agent platform (which this bot runs on) currently allows only text and media — no buttons and no call button.\nThe code is ready, and once WhatsApp enables it this will work automatically.\n\nMeanwhile: send `!menu` and pick a number from the menu 👆',
 
     // ---- shabbat ----
     'general.shabbat.result': '🕯️ *Shabbat Times - {city}* 🕯️\n━━━━━━━━━━━━━━━━━━━\n📖 *Parasha:* {parasha}\n🕯️ *Candle lighting:* {candle}\n✨ *Havdalah:* {havdalah}\n━━━━━━━━━━━━━━━━━━━{note}\nShabbat Shalom!',
@@ -460,7 +460,7 @@ Hello! Choose a category to see its commands:
     'general.ping': '🏓 Pong! Response time: *{delay}ms*',
     'general.me': '👤 ID: {id}\nName: {name}',
     'general.unknown': 'Unknown',
-    'general.wiki.usage': 'Usage: !ויקיפדיה [term]',
+    'general.wiki.usage': 'Usage: !wiki [term]',
     'general.wiki.result': '📖 *{title}*\n\n{extract}',
     'general.time': '🕒 Time: *{time}*',
     'general.date': '📅 Date: *{date}*',
@@ -468,33 +468,33 @@ Hello! Choose a category to see its commands:
 
     // ---- ai ----
     'ai.ask.usage': 'Please provide a question after the command.',
-    'ai.summarize.usage': '❌ Reply to the message you want to summarize, or write the text after the !סכם command.',
+    'ai.summarize.usage': '❌ Reply to the message you want to summarize, or write the text after the !summarize command.',
     'ai.summarize.prompt': 'Summarize the following text concisely, clearly and organized in bullet points:',
     'ai.summarize.title': '📝 *Summary:*\n\n{reply}',
     'ai.imagine.usage': 'Please enter a description for the image.',
     'ai.imagine.title': '🎨 *Image Prompt:*\n\n{reply}',
-    'ai.translate.usage': 'Usage: !תרגם [language] [text]',
+    'ai.translate.usage': 'Usage: !translate [language] [text]',
 
     // ---- games: shared ----
     'games.handTotal': '(total: *{total}*)',
 
     // ---- tic-tac-toe ----
     'games.tictactoe.win': '🎉 *You beat the bot!* (+{points} reputation points)',
-    'games.tictactoe.lose': '🤖 *The bot won!* Try again with `!איקסעיגול התחל`',
+    'games.tictactoe.lose': '🤖 *The bot won!* Try again with `!tictactoe start`',
     'games.tictactoe.draw': '🤝 *Draw!* Well played.',
     'games.tictactoe.cancel': '🛑 Tic-tac-toe game cancelled.',
-    'games.tictactoe.start': '🎮 *Tic-tac-toe started!* You are ❌, the bot is ⭕\n{board}\nPick a cell 1-9 with `!איקסעיגול [number]`',
+    'games.tictactoe.start': '🎮 *Tic-tac-toe started!* You are ❌, the bot is ⭕\n{board}\nPick a cell 1-9 with `!tictactoe [number]`',
     'games.tictactoe.invalid': 'Choose a free cell (1-9):\n{board}',
     'games.tictactoe.taken': '❌ Cell {pos} is taken. Choose another:\n{board}',
-    'games.tictactoe.turn': '{board}\nYour turn! Send `!איקסעיגול [1-9]`',
+    'games.tictactoe.turn': '{board}\nYour turn! Send `!tictactoe [1-9]`',
 
     // ---- blackjack ----
     'games.blackjack.cancel': '🛑 Blackjack game cancelled.',
     'games.blackjack.natural': '🃏 *BLACKJACK! Natural blackjack!* 🎉\n\nYour hand: {player}\nBot hand: {bot}\n\nYou won and earned {points} reputation points!',
-    'games.blackjack.start': '🃏 *Blackjack game (21)* 🃏\n━━━━━━━━━━━━━━━━━━━\n👤 *Your hand:* {player}\n🤖 *Bot hand:* {bot}\n━━━━━━━━━━━━━━━━━━━\nChoose your next move:\n▫️ `!קלף` - take another card (Hit)\n▫️ `!עמוד` - stop and check the result (Stand)\n▫️ `!בלקג\'ק בטל` - cancel the game',
-    'games.blackjack.noGame': 'No active blackjack game right now. Send !בלקג\'ק to start.',
+    'games.blackjack.start': '🃏 *Blackjack game (21)* 🃏\n━━━━━━━━━━━━━━━━━━━\n👤 *Your hand:* {player}\n🤖 *Bot hand:* {bot}\n━━━━━━━━━━━━━━━━━━━\nChoose your next move:\n▫️ `!hit` - take another card (Hit)\n▫️ `!stand` - stop and check the result (Stand)\n▫️ `!blackjack cancel` - cancel the game',
+    'games.blackjack.noGame': 'No active blackjack game right now. Send !blackjack to start.',
     'games.blackjack.bust': '💥 *Bust!*\nYour hand: {hand}\nYou went over 21. The bot wins this time!',
-    'games.blackjack.hit': '🃏 You drew a card:\n{hand}\n\nSend `!קלף` for another card, or `!עמוד` to stand.',
+    'games.blackjack.hit': '🃏 You drew a card:\n{hand}\n\nSend `!hit` for another card, or `!stand` to stand.',
     'games.blackjack.dealerBust': '🎉 *Dealer bust! You win!* (+{points} points)',
     'games.blackjack.win': '🏆 *You beat the bot!* (+{points} points)',
     'games.blackjack.lose': '🤖 *The bot wins!* Better luck next time.',
@@ -502,8 +502,8 @@ Hello! Choose a category to see its commands:
     'games.blackjack.result': '🃏 *Blackjack result* 🃏\n━━━━━━━━━━━━━━━━━━━\n👤 *Your hand:* {player}\n🤖 *Bot hand:* {bot}\n━━━━━━━━━━━━━━━━━━━\n{result}',
 
     // ---- trivia / dice / coin ----
-    'games.trivia.question': '❓ *{q}*\n{opts}\n_Answer: !תשובה [number]_',
-    'games.trivia.noActive': 'No active trivia question. Send !טריוויה to start.',
+    'games.trivia.question': '❓ *{q}*\n{opts}\n_Answer: !answer [number]_',
+    'games.trivia.noActive': 'No active trivia question. Send !trivia to start.',
     'games.trivia.correct': '🎉 *Correct!* (+{points} reputation points)',
     'games.trivia.wrong': '❌ Wrong, try again!',
     'games.dice': '🎲 Result: *{n}*',
@@ -514,7 +514,7 @@ Hello! Choose a category to see its commands:
     'games.quote.format': '📜 {text}',
 
     // ---- reputation ----
-    'games.thanks.usage': '⭐ Reply to someone\'s message with !תודה to give them a reputation point.',
+    'games.thanks.usage': '⭐ Reply to someone\'s message with !thanks to give them a reputation point.',
     'games.thanks.self': '😉 You can\'t give reputation to yourself!',
     'games.thanks.ok': '⭐ Thank you! A reputation point was awarded.',
     'games.reputation': '📊 Your reputation: *{score}*',
@@ -525,46 +525,46 @@ Hello! Choose a category to see its commands:
 
     // ---- hangman ----
     'games.hangman.cancel': '🛑 Hangman game cancelled.',
-    'games.hangman.start': '🪢 *Hangman started!*\n\nWord: {mask}\nStrikes left: ❤️ x 6\n\nSend: `!תלוי [letter]` to guess.',
-    'games.hangman.status': '🪢 Word: {mask}\nStrikes: {lives}\nLetters: {letters}\n\nGuess a letter: `!תלוי [letter]`',
+    'games.hangman.start': '🪢 *Hangman started!*\n\nWord: {mask}\nStrikes left: ❤️ x 6\n\nSend: `!hangman [letter]` to guess.',
+    'games.hangman.status': '🪢 Word: {mask}\nStrikes: {lives}\nLetters: {letters}\n\nGuess a letter: `!hangman [letter]`',
     'games.hangman.oneLetter': 'Send only one letter.',
     'games.hangman.already': 'You already guessed "{letter}".',
     'games.hangman.win': '🎉 *Well done! You guessed the word:* *{word}*!\nYou earned +{points} reputation points!',
-    'games.hangman.lose': '💀 *Game over!* The word was: *{word}*.\nSend !תלוי to start a new game.',
+    'games.hangman.lose': '💀 *Game over!* The word was: *{word}*.\nSend !hangman to start a new game.',
     'games.hangman.noLetters': 'none guessed yet',
 
     // ---- emoji quiz ----
-    'games.emoji.prompt': '🎬 *Emoji quiz! Which movie is this?*\n\n{emojis}\n\n_Answer with: !ניחוש [movie name]_',
-    'games.emoji.noActive': 'No active quiz. Send !חידון to start.',
-    'games.emoji.noGuess': 'Guess a movie name: !ניחוש [movie name]',
+    'games.emoji.prompt': '🎬 *Emoji quiz! Which movie is this?*\n\n{emojis}\n\n_Answer with: !guess [movie name]_',
+    'games.emoji.noActive': 'No active quiz. Send !quiz to start.',
+    'games.emoji.noGuess': 'Guess a movie name: !guess [movie name]',
     'games.emoji.correct': '🎉 *Bullseye! The answer is indeed "{ans}"!* (+{points} reputation points)',
     'games.emoji.wrong': '❌ Wrong, try again!',
 
     // ---- battle ----
     'games.battle.cancel': '🛑 Battle stopped.',
-    'games.battle.start': '⚔️ *Battle against the bot has begun!*\n\n👤 You: 100/100 HP\n🤖 Bot: 100/100 HP\n\nChoose a move:\n▫️ `!קרב התקפה` (safe damage)\n▫️ `!קרב מיוחד` (high damage or miss)\n▫️ `!קרב ריפוי` (+25 HP)',
+    'games.battle.start': '⚔️ *Battle against the bot has begun!*\n\n👤 You: 100/100 HP\n🤖 Bot: 100/100 HP\n\nChoose a move:\n▫️ `!battle attack` (safe damage)\n▫️ `!battle special` (high damage or miss)\n▫️ `!battle heal` (+25 HP)',
     'games.battle.attackLog': '🗡️ You attacked the bot and dealt *{dmg}* damage!\n',
     'games.battle.specialHit': '💥 Special attack hit! You dealt *{dmg}* damage to the bot!\n',
     'games.battle.specialMiss': '💨 The special attack missed!\n',
     'games.battle.heal': '🧪 You drank a potion and healed *{amount}* HP!\n',
-    'games.battle.invalid': 'Choose: !קרב [התקפה / מיוחד / ריפוי / בטל]',
+    'games.battle.invalid': 'Choose: !battle [attack / special / heal / cancel]',
     'games.battle.win': '🏆 *You defeated the bot in battle!* You earned +{points} reputation points!\n\n{log}',
     'games.battle.counter': '🤖 The bot struck back and dealt you *{dmg}* damage!',
-    'games.battle.lose': '💀 *You were defeated in battle!* Try again with !קרב.\n\n{log}',
-    'games.battle.status': '\n\n👤 You: {php}/100 HP\n🤖 Bot: {bhp}/100 HP\n\nChoose a move: `!קרב התקפה` | `!קרב מיוחד` | `!קרב ריפוי`',
+    'games.battle.lose': '💀 *You were defeated in battle!* Try again with !battle.\n\n{log}',
+    'games.battle.status': '\n\n👤 You: {php}/100 HP\n🤖 Bot: {bhp}/100 HP\n\nChoose a move: `!battle attack` | `!battle special` | `!battle heal`',
 
     // ---- race ----
     'games.race.cancel': '🛑 Race cancelled.',
-    'games.race.start': '🏁 *Snakes & ladders race started!* 🐍🪜\n━━━━━━━━━━━━━━\n🟢 You vs 🔴 the bot — first to reach *exactly* 100 wins!\nLadders go up 🪜, snakes go down 🐍\n\nSend `!זרוק` to roll the dice.',
-    'games.race.noRace': 'No active race. Send `!מרוץ` to start.',
+    'games.race.start': '🏁 *Snakes & ladders race started!* 🐍🪜\n━━━━━━━━━━━━━━\n🟢 You vs 🔴 the bot — first to reach *exactly* 100 wins!\nLadders go up 🪜, snakes go down 🐍\n\nSend `!roll` to roll the dice.',
+    'games.race.noRace': 'No active race. Send `!race` to start.',
     'games.race.overshoot': '⏸️ You passed 100 — staying put (need exactly 100!)',
     'games.race.ladder': '🪜 *Ladder!* {from} ← {to}',
     'games.race.snake': '🐍 *Snake!* {from} ← {to}',
     'games.race.roll': '🎲 You rolled: {face} (*{roll}*) → square *{pos}*',
     'games.race.win': '🏆 *You won the race!* 🎉 (+{points} reputation points)\n\n{log}',
     'games.race.botRoll': '🤖 The bot rolled: {face} (*{roll}*) → square *{pos}*',
-    'games.race.botWin': '🤖 *The bot won the race!* Try again with `!מרוץ`\n\n{log}',
-    'games.race.board': '🏁 *Snakes & ladders race* 🐍\n━━━━━━━━━━━━━━\n{log}\n━━━━━━━━━━━━━━\n{bar}\n🟢 You: *{player}* | 🔴 Bot: *{bot}*\n\nSend `!זרוק` for the next turn',
+    'games.race.botWin': '🤖 *The bot won the race!* Try again with `!race`\n\n{log}',
+    'games.race.board': '🏁 *Snakes & ladders race* 🐍\n━━━━━━━━━━━━━━\n{log}\n━━━━━━━━━━━━━━\n{bar}\n🟢 You: *{player}* | 🔴 Bot: *{bot}*\n\nSend `!roll` for the next turn',
 
     // ---- media: youtube ----
     'media.yt.formatAudio': '🎵 Audio file (MP3)',
@@ -575,30 +575,30 @@ Hello! Choose a category to see its commands:
     'media.yt.rateLimit': '⏳ YouTube is temporarily blocking (too many requests). Wait a few minutes and try again.',
     'media.yt.error': '❌ Error downloading from YouTube.',
     'media.yt.noFile': '❌ The download produced no file (probably too large — over 15MB). Try a shorter song.',
-    'media.yt.formatMenu': '🎵 *{title}*\n\nChoose a format — send:\n`!יוטיוב שמע` — MP3 file\n`!יוטיוב קולי` — voice message 🎤\n`!יוטיוב וידאו` — MP4 clip',
-    'media.yt.usage': 'Usage: !יוטיוב [song name or link]\nExample: !יוטיוב עומר אדם',
+    'media.yt.formatMenu': '🎵 *{title}*\n\nChoose a format — send:\n`!youtube audio` — MP3 file\n`!youtube voice` — voice message 🎤\n`!youtube video` — MP4 clip',
+    'media.yt.usage': 'Usage: !youtube [song name or link]\nExample: !youtube imagine dragons',
     'media.yt.range': 'Choose a number between 1 and {max}.',
     'media.yt.searching': '🔎 Searching for "{q}"...',
     'media.yt.searchError': '❌ Error searching YouTube.',
     'media.yt.noResults': 'No results found, try a different query.',
-    'media.yt.results': '🎵 *Search results:*\n\n{list}\n\nSend `!יוטיוב [number]` to choose\nExample: `!יוטיוב 3` or directly `!יוטיוב 3 קולי`',
+    'media.yt.results': '🎵 *Search results:*\n\n{list}\n\nSend `!youtube [number]` to choose\nExample: `!youtube 3` or directly `!youtube 3 voice`',
 
     // ---- media: trim ----
-    'media.trim.usage': 'Usage: reply to a song or video and write:\n!חתוך [start] [end]\nExample: !חתוך 00:10 00:30 or !חתוך 10 30',
-    'media.trim.invalidTime': '❌ Invalid time format. Example: !חתוך 00:10 00:30',
+    'media.trim.usage': 'Usage: reply to a song or video and write:\n!cut [start] [end]\nExample: !cut 00:10 00:30 or !cut 10 30',
+    'media.trim.invalidTime': '❌ Invalid time format. Example: !cut 00:10 00:30',
     'media.trim.noMedia': '❌ You must reply directly to the audio or video file you want to trim.',
     'media.trim.working': '⏳ Trimming the file from {start} to {end}, please wait...',
     'media.trim.done': '✂️ Trimmed successfully ({start} - {end})',
-    'media.trim.error': '❌ Error trimming the file. Make sure you specified valid times (e.g. !חתוך 00:10 00:30).',
+    'media.trim.error': '❌ Error trimming the file. Make sure you specified valid times (e.g. !cut 00:10 00:30).',
 
     // ---- media: sticker / tofile / video / qr ----
-    'media.sticker.noMedia': '❌ Send a photo with the caption *!סטיקר*, or reply to a photo.',
+    'media.sticker.noMedia': '❌ Send a photo with the caption *!sticker*, or reply to a photo.',
     'media.sticker.working': '⏳ Processing the sticker...',
     'media.sticker.error': '❌ Error converting the sticker.',
-    'media.tofile.noMedia': '❌ Reply with *!למי* to a photo or file.',
+    'media.tofile.noMedia': '❌ Reply with *!tofile* to a photo or file.',
     'media.tofile.working': '⏳ Preparing the file as a document...',
     'media.tofile.error': '❌ Error converting the file to a document.',
-    'media.video.usage': 'Usage: !טיקטוק [link]',
+    'media.video.usage': 'Usage: !tiktok [link]',
     'media.video.working': '⏳ Downloading the video, one moment...',
     'media.video.error': '❌ Error downloading the video.',
     'media.qr.usage': 'Usage: !qr [text or link]',
@@ -606,9 +606,9 @@ Hello! Choose a category to see its commands:
     'media.qr.error': '❌ Error creating the QR code.',
 
     // ---- media: reminder / shorten / link / calc / search / filter ----
-    'media.reminder.usage': 'Usage: !תזכורת [time] [דק/שע/ימ] [message]',
-    'media.reminder.badAmount': '❌ Time must be a positive number. Example: !תזכורת 10 דק buy milk',
-    'media.reminder.badUnit': '❌ Invalid time unit. Use: דק / שע / ימ',
+    'media.reminder.usage': 'Usage: !reminder [time] [m/h/d] [message]',
+    'media.reminder.badAmount': '❌ Time must be a positive number. Example: !reminder 10 m buy milk',
+    'media.reminder.badUnit': '❌ Invalid time unit. Use: m / h / d',
     'media.reminder.set': '✅ Reminder set for {amount} {unit} from now.',
     'media.shorten.usage': 'Please provide a link.',
     'media.shorten.ok': '🔗 Shortened link: {url}',
@@ -618,7 +618,7 @@ Hello! Choose a category to see its commands:
     'media.calc.result': '🔢 Result: *{result}*',
     'media.calc.error': 'Calculation error.',
     'media.search.usage': 'Enter a query.',
-    'media.filter.usage': 'Usage: reply to a photo with:\n!פילטר [שחורלבן / נגטיב / טשטוש]',
+    'media.filter.usage': 'Usage: reply to a photo with:\n!filter [bw / negative / blur]',
     'media.filter.noMedia': '❌ You must reply to a photo.',
     'media.filter.working': '⏳ Applying filter to the photo...',
     'media.filter.done': '✨ Filter {type} applied successfully!',
@@ -643,17 +643,17 @@ Hello! Choose a category to see its commands:
     'tools.rates.title': '💰 *Currency & Crypto Rates* 💰\n━━━━━━━━━━━━━━━━━━━\n{fiat}\n{crypto}\n━━━━━━━━━━━━━━━━━━━',
 
     // ---- tools: todo ----
-    'tools.todo.addUsage': 'Usage: !רשימה הוסף [item]',
+    'tools.todo.addUsage': 'Usage: !todo add [item]',
     'tools.todo.added': '✅ Added to the list: "{item}"',
     'tools.todo.badIndex': 'Invalid item number.',
     'tools.todo.removed': '🗑️ Item "{item}" deleted.',
     'tools.todo.cleared': '🧹 Your list was fully cleared.',
-    'tools.todo.empty': '📝 Your list is empty. Add items with:\n`!רשימה הוסף [item]`',
+    'tools.todo.empty': '📝 Your list is empty. Add items with:\n`!todo add [item]`',
     'tools.todo.title': '📝 *Your personal list:*\n━━━━━━━━━━━━━━━━━━━\n',
-    'tools.todo.footer': '\n_To delete an item: !רשימה מחק [number]_',
+    'tools.todo.footer': '\n_To delete an item: !todo del [number]_',
 
     // ---- tools: choose ----
-    'tools.choose.usage': 'Usage: !בחר [option 1], [option 2], [option 3]...\nExample: !בחר pizza, burger, shawarma',
+    'tools.choose.usage': 'Usage: !choose [option 1], [option 2], [option 3]...\nExample: !choose pizza, burger, shawarma',
     'tools.choose.result': '🎯 The bot chose: *{choice}*!',
 
     // ---- owner ----
@@ -665,9 +665,9 @@ Hello! Choose a category to see its commands:
     'owner.notSet': 'not set',
     'owner.version': '⚙️ Version 1.0.0 (WhatsApp Agent Platform v1 - 2026)',
     'owner.owner': '👑 Owner: {id}',
-    'owner.setMode.usage': 'Usage: !שנהמצב [self/authorized/public]',
+    'owner.setMode.usage': 'Usage: !setmode [self/authorized/public]',
     'owner.setMode.ok': '🔒 Bot mode changed to: *{mode}*',
-    'owner.addAuth.usage': 'Usage: !הוסףמורשהגלובלי user:<id>',
+    'owner.addAuth.usage': 'Usage: !addauth user:<id>',
     'owner.addAuth.ok': '✅ {user} added to authorized users.',
     'owner.removeAuth.ok': '❌ {user} removed from authorized users.',
     'owner.listAuth': '📋 Authorized users:\n{list}',

@@ -105,9 +105,10 @@ function ytFormatMenu(video) {
 }
 
 function ytParseFormat(word) {
-  if (word === 'שמע') return 'audio';
-  if (word === 'קולי') return 'voice';
-  if (word === 'וידאו') return 'video';
+  const w = (word || '').toLowerCase();
+  if (w === 'שמע' || w === 'audio') return 'audio';
+  if (w === 'קולי' || w === 'voice') return 'voice';
+  if (w === 'וידאו' || w === 'video') return 'video';
   return null;
 }
 
@@ -343,13 +344,13 @@ module.exports = {
     if (!Number.isFinite(amount) || amount <= 0) {
       return client.sendMessage(msg.from, t('media.reminder.badAmount'));
     }
-    if (!['דק', 'שע', 'ימ'].some(u => unit.startsWith(u))) {
+    if (!['דק', 'שע', 'ימ', 'm', 'h', 'd'].some(u => unit.startsWith(u))) {
       return client.sendMessage(msg.from, t('media.reminder.badUnit'));
     }
 
     let ms = amount * 60 * 1000;
-    if (unit.startsWith('שע')) ms = amount * 60 * 60 * 1000;
-    if (unit.startsWith('ימ')) ms = amount * 24 * 60 * 60 * 1000;
+    if (unit.startsWith('שע') || unit.startsWith('h')) ms = amount * 60 * 60 * 1000;
+    if (unit.startsWith('ימ') || unit.startsWith('d')) ms = amount * 24 * 60 * 60 * 1000;
 
     const dueTime = Date.now() + ms;
     db.update(d => {

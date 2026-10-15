@@ -64,6 +64,7 @@ async function downloadAndSendYoutube(client, msg, url, format, title = '') {
       await execFilePromise('yt-dlp', [
         ...YT_ARGS, ...YT_DL_ARGS, '-f', 'best[ext=mp4]/mp4', '-o', filePath, url, '--max-filesize', '15M'
       ], EXEC_OPTS);
+      if (!fs.existsSync(filePath)) throw new Error('NO_FILE: yt-dlp produced no mp4 (over --max-filesize 15M?)');
       mime = 'video/mp4'; sendType = 'video'; caption = t('media.done');
     } else {
       const mp3Path = path.join(tempDir, `yta_${stamp}.mp3`);
@@ -71,6 +72,7 @@ async function downloadAndSendYoutube(client, msg, url, format, title = '') {
         ...YT_ARGS, ...YT_DL_ARGS, '--extract-audio', '--audio-format', 'mp3', '--audio-quality', '128K',
         '-o', mp3Path, url, '--max-filesize', '15M'
       ], EXEC_OPTS);
+      if (!fs.existsSync(mp3Path)) throw new Error('NO_FILE: yt-dlp produced no mp3 (over --max-filesize 15M?)');
       if (format === 'voice') {
         filePath = path.join(tempDir, `ytvoice_${stamp}.ogg`);
         await execFilePromise('ffmpeg', ['-y', '-i', mp3Path, '-c:a', 'libopus', '-b:a', '64k', filePath]);
@@ -88,9 +90,12 @@ async function downloadAndSendYoutube(client, msg, url, format, title = '') {
     try { fs.unlinkSync(filePath); } catch {}
   } catch (e) {
     console.error('[YouTube download error]', e.message);
-    const errText = /429|Too Many Requests/i.test(e.message || '')
+    const errMsg = e.message || '';
+    const errText = /429|Too Many Requests/i.test(errMsg)
       ? t('media.yt.rateLimit')
-      : t('media.yt.error');
+      : /NO_FILE/.test(errMsg)
+        ? t('media.yt.noFile')
+        : t('media.yt.error');
     await client.sendMessage(msg.from, errText);
   }
 }

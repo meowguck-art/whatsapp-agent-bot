@@ -346,7 +346,11 @@ const STR = {
     'index.reminder': '⏰ *תזכורת:* {text}',
     'index.reminderError': 'שגיאה בשליחת תזכורת:',
     'index.closing': '\nסוגר בוט...',
-    'index.sigterm': '[Shutdown] התקבל SIGTERM — סוגר בצורה מסודרת'
+    'index.sigterm': '[Shutdown] התקבל SIGTERM — סוגר בצורה מסודרת',
+    'poller.start': '[Poller] מפעיל האזנה להודעות...',
+    'poller.rateLimit': '[Poller {status}] המתנה של 10 שניות עקב עומס...',
+    'poller.replaced': '[Poller 409] סקר חדש החליף את הנוכחי.',
+    'poller.unexpected': '[Poller {status}] שגיאה לא צפויה, המתנה של 10 שניות...',
   },
 
   en: {
@@ -690,7 +694,11 @@ Hello! Choose a category to see its commands:
     'index.reminder': '⏰ *Reminder:* {text}',
     'index.reminderError': 'Error sending reminder:',
     'index.closing': '\nClosing bot...',
-    'index.sigterm': '[Shutdown] Received SIGTERM — closing gracefully'
+    'index.sigterm': '[Shutdown] Received SIGTERM — closing gracefully',
+    'poller.start': '[Poller] Listening for messages...',
+    'poller.rateLimit': '[Poller {status}] Rate limited, waiting 10s...',
+    'poller.replaced': '[Poller 409] A new poll replaced the current one.',
+    'poller.unexpected': '[Poller {status}] Unexpected error, waiting 10s...',
   }
 };
 

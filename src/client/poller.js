@@ -1,5 +1,6 @@
 const client = require('./api');
 const config = require('../config');
+const { t } = require('../i18n');
 
 class Poller {
   constructor(onUpdateCallback) {
@@ -10,7 +11,7 @@ class Poller {
 
   async start() {
     this.isRunning = true;
-    console.log('[Poller] מפעיל האזנה להודעות...');
+    console.log(t('poller.start'));
 
     while (this.isRunning) {
       try {
@@ -40,15 +41,15 @@ class Poller {
           if (status === 204) {
             continue; // פסק זמן ללא תוכן - ממשיכים עם אותו ה-offset
           } else if (status === 429 || status === 500) {
-            console.warn(`[Poller ${status}] המתנה של 10 שניות עקב עומס...`);
+            console.warn(t('poller.rateLimit', { status }));
             await new Promise(r => setTimeout(r, 10000));
           } else if (status === 409) {
-            console.warn('[Poller 409] סקר חדש החליף את הנוכחי.');
+            console.warn(t('poller.replaced'));
             await new Promise(r => setTimeout(r, 5000));
           } else {
             // סטטוס לא צפוי (401/403/400 וכו') — המתנה לפני ניסיון חוזר כדי לא
             // להיכנס ללולאה צפופה שמפציצה את ה-API
-            console.warn(`[Poller ${status}] שגיאה לא צפויה, המתנה של 10 שניות...`);
+            console.warn(t('poller.unexpected', { status }));
             await new Promise(r => setTimeout(r, 10000));
           }
         } else {

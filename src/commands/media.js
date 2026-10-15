@@ -257,8 +257,8 @@ module.exports = {
     }
 
     const state = getYtState(userId);
-    const fmtOnly = raw.match(/^(שמע|קולי|וידאו)$/);
-    const numMatch = raw.match(/^(\d{1,2})(?:\s+(שמע|קולי|וידאו))?$/);
+    const fmtOnly = raw.match(/^(שמע|קולי|וידאו|audio|voice|video)$/i);
+    const numMatch = raw.match(/^(\d{1,2})(?:\s+(שמע|קולי|וידאו|audio|voice|video))?$/i);
 
     // שלב 3: בחירת פורמט אחרי בחירת סרטון
     if (fmtOnly && state && state.selected) {

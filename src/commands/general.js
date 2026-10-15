@@ -110,11 +110,12 @@ module.exports = {
   async wiki(client, msg, args) {
     const q = args.join(' ');
     if (!q) return client.sendMessage(msg.from, t('general.wiki.usage'));
+    const wikiLang = pick('he', 'en');
     try {
-      const res = await axios.get(`https://he.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(q)}`);
+      const res = await axios.get(`https://${wikiLang}.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(q)}`);
       if (res.data.extract) return client.sendMessage(msg.from, t('general.wiki.result', { title: res.data.title, extract: res.data.extract }));
     } catch {}
-    await client.sendMessage(msg.from, `📖 https://he.wikipedia.org/wiki/${encodeURIComponent(q)}`);
+    await client.sendMessage(msg.from, `📖 https://${wikiLang}.wikipedia.org/wiki/${encodeURIComponent(q)}`);
   },
   async time(client, msg) {
     await client.sendMessage(msg.from, t('general.time', {

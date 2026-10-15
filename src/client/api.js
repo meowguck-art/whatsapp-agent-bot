@@ -156,7 +156,7 @@ class WhatsAppClient {
           action: {
             name: 'voice_call',
             parameters: {
-              display_text: String(options.displayText || 'התקשר בוואטסאפ').slice(0, 20),
+              display_text: String(options.displayText || (config.lang === 'en' ? 'Call on WhatsApp' : 'התקשר בוואטסאפ')).slice(0, 20),
               ttl_minutes: options.ttlMinutes || 10080
             }
           }

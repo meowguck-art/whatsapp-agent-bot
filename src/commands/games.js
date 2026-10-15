@@ -275,7 +275,7 @@ module.exports.hangman = async function(client, msg, args) {
   const userId = msg.from;
   const letter = args[0]?.trim();
 
-  if (letter === 'בטל' || letter.toLowerCase() === 'cancel') {
+  if (letter === 'בטל' || letter?.toLowerCase() === 'cancel') {
     db.update(d => { delete d.hangman[userId]; });
     return client.sendMessage(userId, t('games.hangman.cancel'));
   }

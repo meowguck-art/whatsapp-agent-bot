@@ -92,9 +92,13 @@ module.exports = {
   // חדשות Ynet בזמן אמת ללא ספריות נוספות
   async news(client, msg) {
     try {
-      const xmlRes = await axios.get('https://www.ynet.co.il/Integration/StoryRss2.xml');
+      const feedUrl = pick(
+        'https://www.ynet.co.il/Integration/StoryRss2.xml',
+        'https://www.jpost.com/rss/rssfeedsfrontpage.aspx'
+      );
+      const xmlRes = await axios.get(feedUrl, { headers: { 'User-Agent': 'Mozilla/5.0' } });
       const xml = xmlRes.data;
-      const regex = /<item>[\s\S]*?<title><!\[CDATA\[([\s\S]*?)\]\]><\/title>[\s\S]*?<link>([\s\S]*?)<\/link>/g;
+      const regex = /<item>[\s\S]*?<title>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/title>[\s\S]*?<link>([\s\S]*?)<\/link>/g;
       const items = [];
       let match;
       while ((match = regex.exec(xml)) !== null && items.length < 5) {

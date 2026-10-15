@@ -632,7 +632,7 @@ Hello! Choose a category to see its commands:
 
     // ---- tools: news ----
     'tools.news.empty': 'No flashes found right now.',
-    'tools.news.header': '📰 *Latest news flashes (Ynet):*\n━━━━━━━━━━━━━━━━━━━\n\n',
+    'tools.news.header': '📰 *Latest news flashes (Jerusalem Post):*\n━━━━━━━━━━━━━━━━━━━\n\n',
     'tools.news.error': '❌ Error fetching news headlines.',
 
     // ---- tools: rates ----

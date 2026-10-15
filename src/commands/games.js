@@ -1,4 +1,5 @@
 const db = require('../services/database');
+const { t, pick } = require('../i18n');
 
 const suits = ['♠', '♥', '♦', '♣'];
 const ranks = [
@@ -25,7 +26,7 @@ function calculateHand(hand) {
 
 function formatHand(hand, hideSecond = false) {
   if (hideSecond) return `[ ${hand[0].str} | 🎴 ]`;
-  return `[ ${hand.map(c => c.str).join(' | ')} ] (סך הכל: *${calculateHand(hand)}*)`;
+  return `[ ${hand.map(c => c.str).join(' | ')} ] ${t('games.handTotal', { total: calculateHand(hand) })}`;
 }
 
 // --- איקס-עיגול ---
@@ -59,16 +60,16 @@ function checkWinner(b) {
 async function endTictactoe(client, userId, game, winner) {
   let text = `${renderBoard(game.board)}\n\n`;
   if (winner === 'X') {
-    text += '🎉 *ניצחת את הבוט!* (+3 נקודות מוניטין)';
+    text += t('games.tictactoe.win', { points: 3 });
     db.update(d => {
       delete d.tictactoe[userId];
       d.reputation[userId] = (d.reputation[userId] || 0) + 3;
     });
   } else if (winner === 'O') {
-    text += '🤖 *הבוט ניצח!* נסה שוב עם `!איקסעיגול התחל`';
+    text += t('games.tictactoe.lose');
     db.update(d => { delete d.tictactoe[userId]; });
   } else {
-    text += '🤝 *תיקו!* כל הכבוד.';
+    text += t('games.tictactoe.draw');
     db.update(d => { delete d.tictactoe[userId]; });
   }
   await client.sendMessage(userId, text);
@@ -82,7 +83,7 @@ module.exports = {
 
     if (sub === 'בטל') {
       db.update(d => { delete d.blackjack[userId]; });
-      return client.sendMessage(userId, '🛑 משחק הבלקג\'ק בוטל.');
+      return client.sendMessage(userId, t('games.blackjack.cancel'));
     }
 
     const playerHand = [drawCard(), drawCard()];
@@ -96,21 +97,16 @@ module.exports = {
         delete d.blackjack[userId];
         d.reputation[userId] = (d.reputation[userId] || 0) + 5;
       });
-      return client.sendMessage(userId, `🃏 *BLACKJACK! בלקג'ק טבעי!* 🎉\n\nהיד שלך: ${formatHand(playerHand)}\nיד הבוט: ${formatHand(dealerHand)}\n\nניצחת וזכית ב-5 נקודות מוניטין!`);
+      return client.sendMessage(userId, t('games.blackjack.natural', {
+        player: formatHand(playerHand), bot: formatHand(dealerHand), points: 5
+      }));
     }
 
     db.update(d => { d.blackjack[userId] = game; });
 
-    const text = 
-`🃏 *משחק בלקג'ק (21)* 🃏
-━━━━━━━━━━━━━━━━━━━
-👤 *היד שלך:* ${formatHand(playerHand)}
-🤖 *היד של הבוט:* ${formatHand(dealerHand, true)}
-━━━━━━━━━━━━━━━━━━━
-בחר את הצעד הבא:
-▫️ \`!קלף\` - לקחת קלף נוסף (Hit)
-▫️ \`!עמוד\` - לעצור ולבדוק תוצאה (Stand)
-▫️ \`!בלקג'ק בטל\` - לביטול המשחק`;
+    const text = t('games.blackjack.start', {
+      player: formatHand(playerHand), bot: formatHand(dealerHand, true)
+    });
 
     await client.sendMessage(userId, text);
   },
@@ -119,25 +115,25 @@ module.exports = {
   async blackjackHit(client, msg) {
     const userId = msg.from;
     const game = db.get().blackjack[userId];
-    if (!game) return client.sendMessage(userId, 'לא פעיל כרגע משחק בלקג\'ק. שלח !בלקג\'ק כדי להתחיל.');
+    if (!game) return client.sendMessage(userId, t('games.blackjack.noGame'));
 
     game.playerHand.push(drawCard());
     const pScore = calculateHand(game.playerHand);
 
     if (pScore > 21) {
       db.update(d => { delete d.blackjack[userId]; });
-      return client.sendMessage(userId, `💥 *נפסלת! (Bust)*\nהיד שלך: ${formatHand(game.playerHand)}\nעברת את 21. הבוט ניצח הפעם!`);
+      return client.sendMessage(userId, t('games.blackjack.bust', { hand: formatHand(game.playerHand) }));
     }
 
     db.update(d => { d.blackjack[userId] = game; });
-    await client.sendMessage(userId, `🃏 לקחת קלף:\n${formatHand(game.playerHand)}\n\nשלח \`!קלף\` לקלף נוסף, או \`!עמוד\` לעצירה.`);
+    await client.sendMessage(userId, t('games.blackjack.hit', { hand: formatHand(game.playerHand) }));
   },
 
   // עצירה ותור הבוט
   async blackjackStand(client, msg) {
     const userId = msg.from;
     const game = db.get().blackjack[userId];
-    if (!game) return client.sendMessage(userId, 'לא פעיל כרגע משחק בלקג\'ק. שלח !בלקג\'ק כדי להתחיל.');
+    if (!game) return client.sendMessage(userId, t('games.blackjack.noGame'));
 
     const pScore = calculateHand(game.playerHand);
 
@@ -150,26 +146,22 @@ module.exports = {
     let result = '';
 
     if (dScore > 21) {
-      result = '🎉 *הבוט נפסל (Bust)! ניצחת!* (+3 נקודות)';
+      result = t('games.blackjack.dealerBust', { points: 3 });
       db.update(d => { d.reputation[userId] = (d.reputation[userId] || 0) + 3; });
     } else if (pScore > dScore) {
-      result = '🏆 *ניצחת את הבוט!* (+3 נקודות)';
+      result = t('games.blackjack.win', { points: 3 });
       db.update(d => { d.reputation[userId] = (d.reputation[userId] || 0) + 3; });
     } else if (pScore < dScore) {
-      result = '🤖 *הבוט ניצח!* נסה שוב בפעם הבאה.';
+      result = t('games.blackjack.lose');
     } else {
-      result = '🤝 *תיקו (Push)!*';
+      result = t('games.blackjack.push');
     }
 
     db.update(d => { delete d.blackjack[userId]; });
 
-    const text = 
-`🃏 *תוצאת בלקג'ק* 🃏
-━━━━━━━━━━━━━━━━━━━
-👤 *היד שלך:* ${formatHand(game.playerHand)}
-🤖 *היד של הבוט:* ${formatHand(game.dealerHand)}
-━━━━━━━━━━━━━━━━━━━
-${result}`;
+    const text = t('games.blackjack.result', {
+      player: formatHand(game.playerHand), bot: formatHand(game.dealerHand), result
+    });
 
     await client.sendMessage(userId, text);
   },
@@ -179,23 +171,23 @@ ${result}`;
     const sub = args[0]?.toLowerCase();
     if (sub === 'בטל') {
       db.update(d => { delete d.tictactoe[userId]; });
-      return client.sendMessage(userId, '🛑 משחק האיקס-עיגול בוטל.');
+      return client.sendMessage(userId, t('games.tictactoe.cancel'));
     }
 
     let game = db.get().tictactoe[userId];
     if (!game || sub === 'התחל') {
       game = { board: Array(9).fill(' '), active: true };
       db.update(d => { d.tictactoe[userId] = game; });
-      return client.sendMessage(userId, `🎮 *משחק איקס-עיגול החל!* אתה ❌ והבוט ⭕\n${renderBoard(game.board)}\nבחר משבצת 1-9 עם \`!איקסעיגול [מספר]\``);
+      return client.sendMessage(userId, t('games.tictactoe.start', { board: renderBoard(game.board) }));
     }
 
     const pos = parseInt(sub, 10);
     if (!Number.isInteger(pos) || pos < 1 || pos > 9) {
-      return client.sendMessage(userId, `בחר משבצת פנויה (1-9):\n${renderBoard(game.board)}`);
+      return client.sendMessage(userId, t('games.tictactoe.invalid', { board: renderBoard(game.board) }));
     }
     const idx = pos - 1;
     if (game.board[idx] !== ' ') {
-      return client.sendMessage(userId, `❌ המשבצת ${pos} תפוסה. בחר אחרת:\n${renderBoard(game.board)}`);
+      return client.sendMessage(userId, t('games.tictactoe.taken', { pos, board: renderBoard(game.board) }));
     }
 
     game.board[idx] = 'X';
@@ -214,95 +206,102 @@ ${result}`;
     }
 
     db.update(d => { d.tictactoe[userId] = game; });
-    await client.sendMessage(userId, `${renderBoard(game.board)}\nתורך! שלח \`!איקסעיגול [1-9]\``);
+    await client.sendMessage(userId, t('games.tictactoe.turn', { board: renderBoard(game.board) }));
   },
 
   async trivia(client, msg) {
-    const q = triviaBank[Math.floor(Math.random() * triviaBank.length)];
+    const bank = pick(triviaBank, triviaBankEn);
+    const q = bank[Math.floor(Math.random() * bank.length)];
     db.update(d => { d.trivia[msg.from] = q.a; });
     const opts = q.options.map((o, i) => `${i + 1}. ${o}`).join('\n');
-    await client.sendMessage(msg.from, `❓ *${q.q}*\n${opts}\n_ענה: !תשובה [מספר]_`);
+    await client.sendMessage(msg.from, t('games.trivia.question', { q: q.q, opts }));
   },
   async answer(client, msg, args) {
     const correct = db.get().trivia[msg.from];
-    if (!correct) return client.sendMessage(msg.from, 'אין שאלת טריוויה פעילה. שלח !טריוויה כדי להתחיל.');
+    if (!correct) return client.sendMessage(msg.from, t('games.trivia.noActive'));
     const guess = parseInt(args[0], 10);
     if (guess === correct) {
       db.update(d => {
         delete d.trivia[msg.from];
         d.reputation[msg.from] = (d.reputation[msg.from] || 0) + 2;
       });
-      return client.sendMessage(msg.from, '🎉 *נכון מאוד!* (+2 נקודות מוניטין)');
+      return client.sendMessage(msg.from, t('games.trivia.correct', { points: 2 }));
     }
-    await client.sendMessage(msg.from, '❌ לא נכון, נסה שוב!');
+    await client.sendMessage(msg.from, t('games.trivia.wrong'));
   },
-  async dice(client, msg) { await client.sendMessage(msg.from, `🎲 תוצאה: *${Math.floor(Math.random() * 6) + 1}*`); },
-  async coin(client, msg) { await client.sendMessage(msg.from, `🪙 תוצאה: *${Math.random() < 0.5 ? 'עץ' : 'פלי'}*`); },
+  async dice(client, msg) { await client.sendMessage(msg.from, t('games.dice', { n: Math.floor(Math.random() * 6) + 1 })); },
+  async coin(client, msg) { await client.sendMessage(msg.from, t('games.coin.result', { side: Math.random() < 0.5 ? t('games.coin.heads') : t('games.coin.tails') })); },
   async joke(client, msg) {
-    await client.sendMessage(msg.from, `😄 ${jokes[Math.floor(Math.random() * jokes.length)]}`);
+    const bank = pick(jokes, jokesEn);
+    await client.sendMessage(msg.from, t('games.joke.format', { text: bank[Math.floor(Math.random() * bank.length)] }));
   },
   async quote(client, msg) {
-    await client.sendMessage(msg.from, `📜 ${quotes[Math.floor(Math.random() * quotes.length)]}`);
+    const bank = pick(quotes, quotesEn);
+    await client.sendMessage(msg.from, t('games.quote.format', { text: bank[Math.floor(Math.random() * bank.length)] }));
   },
   async reverse(client, msg, args) { await client.sendMessage(msg.from, args.join(' ').split('').reverse().join('')); },
   async thanks(client, msg, args, rawMsg) {
     const quotedId = rawMsg.context?.id;
     const quoted = quotedId ? db.get().recentMessages[quotedId] : null;
     if (!quoted || !quoted.from) {
-      return client.sendMessage(msg.from, '⭐ הגב (Reply) על הודעה של מישהו עם !תודה כדי להעניק לו נקודת מוניטין.');
+      return client.sendMessage(msg.from, t('games.thanks.usage'));
     }
     if (quoted.from === msg.from) {
-      return client.sendMessage(msg.from, '😉 אי אפשר להעניק מוניטין לעצמך!');
+      return client.sendMessage(msg.from, t('games.thanks.self'));
     }
     db.update(d => { d.reputation[quoted.from] = (d.reputation[quoted.from] || 0) + 1; });
-    await client.sendMessage(msg.from, `⭐ תודה רבה! הוענקה נקודת מוניטין.`);
+    await client.sendMessage(msg.from, t('games.thanks.ok'));
   },
-  async reputation(client, msg) { await client.sendMessage(msg.from, `📊 המוניטין שלך: *${db.get().reputation[msg.from] || 0}*`); },
+  async reputation(client, msg) { await client.sendMessage(msg.from, t('games.reputation', { score: db.get().reputation[msg.from] || 0 })); },
   async top5(client, msg) {
     const rep = db.get().reputation || {};
     const sorted = Object.entries(rep).sort((a, b) => b[1] - a[1]).slice(0, 5);
-    if (sorted.length === 0) return client.sendMessage(msg.from, '🏆 עדיין אין ניקוד מוניטין. שחקו כדי לצבור נקודות!');
+    if (sorted.length === 0) return client.sendMessage(msg.from, t('games.top5.empty'));
     const medals = ['🥇', '🥈', '🥉', '4️⃣', '5️⃣'];
-    let text = '🏆 *טופ 5 מוניטין* 🏆\n━━━━━━━━━━━━━━━━━━━\n';
+    let text = t('games.top5.title');
     sorted.forEach(([user, score], i) => {
-      const you = user === msg.from ? ' (אתה)' : '';
-      text += `${medals[i]} ${score} נקודות${you}\n`;
+      const you = user === msg.from ? t('games.top5.you') : '';
+      text += t('games.top5.row', { medal: medals[i], score, you });
     });
     await client.sendMessage(msg.from, text.trim());
   }
 };
 
 const hangmanWords = ['מחשב', 'ישראל', 'מוזיקה', 'שוקולד', 'טלפון', 'אינטרנט', 'חלל', 'חופשה', 'אופניים', 'גלידה', 'פיצה'];
+const hangmanWordsEn = ['computer', 'israel', 'music', 'chocolate', 'phone', 'internet', 'space', 'vacation', 'bicycle', 'icecream', 'pizza'];
 
-// משחק איש תלוי
+// משחק איש תלוי / hangman
 module.exports.hangman = async function(client, msg, args) {
   const userId = msg.from;
   const letter = args[0]?.trim();
 
   if (letter === 'בטל') {
     db.update(d => { delete d.hangman[userId]; });
-    return client.sendMessage(userId, '🛑 משחק האיש התלוי בוטל.');
+    return client.sendMessage(userId, t('games.hangman.cancel'));
   }
 
   let game = db.get().hangman[userId];
 
-  // התחלת משחק
+  // התחלת משחק / start
   if (!game) {
-    const word = hangmanWords[Math.floor(Math.random() * hangmanWords.length)];
+    const words = pick(hangmanWords, hangmanWordsEn);
+    const word = words[Math.floor(Math.random() * words.length)];
     game = { word, guessed: [], lives: 6 };
     db.update(d => { d.hangman[userId] = game; });
     const mask = word.split('').map(() => '—').join(' ');
-    return client.sendMessage(userId, `🪢 *משחק איש תלוי החל!*\n\nהמילה: ${mask}\nפסילות שנותרו: ❤️ x 6\n\nשלח: \`!תלוי [אות]\` כדי לנחש.`);
+    return client.sendMessage(userId, t('games.hangman.start', { mask }));
   }
 
   // משחק קיים ללא אות - הצגת המצב הנוכחי (בלי לאפס)
   if (!letter) {
     const mask = game.word.split('').map(c => game.guessed.includes(c) ? c : '—').join(' ');
-    return client.sendMessage(userId, `🪢 המילה: ${mask}\nפסילות: ${'❤️'.repeat(game.lives)}\nאותיות: ${game.guessed.join(', ') || 'עדיין לא נוחשו'}\n\nנחש אות: \`!תלוי [אות]\``);
+    return client.sendMessage(userId, t('games.hangman.status', {
+      mask, lives: '❤️'.repeat(game.lives), letters: game.guessed.join(', ') || t('games.hangman.noLetters')
+    }));
   }
 
-  if (letter.length !== 1) return client.sendMessage(userId, 'שלח אות אחת בלבד.');
-  if (game.guessed.includes(letter)) return client.sendMessage(userId, `כבר ניחשת את האות "${letter}".`);
+  if (letter.length !== 1) return client.sendMessage(userId, t('games.hangman.oneLetter'));
+  if (game.guessed.includes(letter)) return client.sendMessage(userId, t('games.hangman.already', { letter }));
 
   game.guessed.push(letter);
   if (!game.word.includes(letter)) {
@@ -316,19 +315,21 @@ module.exports.hangman = async function(client, msg, args) {
       delete d.hangman[userId];
       d.reputation[userId] = (d.reputation[userId] || 0) + 3;
     });
-    return client.sendMessage(userId, `🎉 *כל הכבוד! ניחשת את המילה:* *${game.word}*!\nזכית ב-+3 נקודות מוניטין!`);
+    return client.sendMessage(userId, t('games.hangman.win', { word: game.word, points: 3 }));
   }
 
   if (game.lives <= 0) {
     db.update(d => { delete d.hangman[userId]; });
-    return client.sendMessage(userId, `💀 *נפסלת!* המילה הייתה: *${game.word}*.\nשלח !תלוי להתחלת משחק חדש.`);
+    return client.sendMessage(userId, t('games.hangman.lose', { word: game.word }));
   }
 
   db.update(d => { d.hangman[userId] = game; });
-  await client.sendMessage(userId, `🪢 המילה: ${mask}\nפסילות: ${'❤️'.repeat(game.lives)}\nאותיות: ${game.guessed.join(', ')}\n\nנחש אות: \`!תלוי [אות]\``);
+  await client.sendMessage(userId, t('games.hangman.status', {
+    mask, lives: '❤️'.repeat(game.lives), letters: game.guessed.join(', ')
+  }));
 };
 
-// מאגר בדיחות וציטוטים
+// מאגר בדיחות וציטוטים / jokes & quotes banks
 const jokes = [
   'למה מחשבים לא הולכים לים? כי הם מפחדים מגלישה!',
   'למה הספר הלך לרופא? כי היו לו דפים חולים!',
@@ -336,6 +337,15 @@ const jokes = [
   'למה התרנגול חצה את הכביש? כי הוא רצה להגיע לצד השני!',
   'מה קורה כשפיל דורך על נמלה? היא צועקת: היי, תיזהר!',
   'למה דגים לא משחקים כדורגל? כי הם מפחדים מהרשת!'
+];
+
+const jokesEn = [
+  'Why don\'t computers go to the beach? They\'re afraid of surfing the net!',
+  'Why did the book go to the doctor? It had sick pages!',
+  'What does zero say to eight? Nice belt you\'ve got there!',
+  'Why did the chicken cross the road? To get to the other side!',
+  'What happens when an elephant steps on an ant? It yells: hey, watch out!',
+  'Why don\'t fish play soccer? They\'re afraid of the net!'
 ];
 
 const quotes = [
@@ -346,7 +356,15 @@ const quotes = [
   'הדבר היחיד שעומד בינך לבין המטרה שלך הוא הסיפור שאתה מספר לעצמך.'
 ];
 
-// מאגר שאלות טריוויה
+const quotesEn = [
+  'Do what you love!',
+  'The best way to predict the future is to create it.',
+  'Don\'t wait for opportunity — create it.',
+  'Success is the sum of small efforts repeated day after day.',
+  'The only thing standing between you and your goal is the story you tell yourself.'
+];
+
+// מאגר שאלות טריוויה / trivia question bank
 const triviaBank = [
   { q: 'מהי בירת ישראל?', options: ['ירושלים', 'תל אביב', 'חיפה', 'אילת'], a: 1 },
   { q: 'כמה יבשות יש בעולם?', options: ['5', '6', '7', '8'], a: 3 },
@@ -358,7 +376,18 @@ const triviaBank = [
   { q: 'איזה כוכב לכת הוא הקרוב ביותר לשמש?', options: ['נוגה', 'כוכב חמה', 'מאדים', 'צדק'], a: 2 }
 ];
 
-// חידון אימוג'י
+const triviaBankEn = [
+  { q: 'What is the capital of Israel?', options: ['Jerusalem', 'Tel Aviv', 'Haifa', 'Eilat'], a: 1 },
+  { q: 'How many continents are there?', options: ['5', '6', '7', '8'], a: 3 },
+  { q: 'What is the largest ocean in the world?', options: ['Atlantic', 'Indian', 'Pacific', 'Arctic'], a: 3 },
+  { q: 'In what year was the State of Israel founded?', options: ['1945', '1948', '1950', '1967'], a: 2 },
+  { q: 'How many players does a soccer team field?', options: ['9', '10', '11', '12'], a: 3 },
+  { q: 'What is the most spoken language in the world?', options: ['English', 'Spanish', 'Hindi', 'Mandarin'], a: 4 },
+  { q: 'Which planet is closest to the sun?', options: ['Venus', 'Mercury', 'Mars', 'Jupiter'], a: 2 },
+  { q: 'How many days are in a leap year?', options: ['364', '365', '366', '367'], a: 3 }
+];
+
+// חידון אימוג'י / emoji quiz bank
 const emojiList = [
   { emojis: '🦁👑', title: 'מלך האריות' },
   { emojis: '🕷️🕸️', title: 'ספיידרמן' },
@@ -368,64 +397,74 @@ const emojiList = [
   { emojis: '🦖🌴🚗', title: 'פארק היורה' }
 ];
 
+const emojiListEn = [
+  { emojis: '🦁👑', title: 'The Lion King' },
+  { emojis: '🕷️🕸️', title: 'Spider-Man' },
+  { emojis: '🚢🧊💔', title: 'Titanic' },
+  { emojis: '🧙‍♂️⚡👓', title: 'Harry Potter' },
+  { emojis: '🦇🌃🦸', title: 'Batman' },
+  { emojis: '🦖🌴🚗', title: 'Jurassic Park' }
+];
+
 module.exports.emojiQuiz = async function(client, msg) {
-  const item = emojiList[Math.floor(Math.random() * emojiList.length)];
+  const bank = pick(emojiList, emojiListEn);
+  const item = bank[Math.floor(Math.random() * bank.length)];
   db.update(d => {
     d.emojiQuiz[msg.from] = item.title;
   });
-  await client.sendMessage(msg.from, `🎬 *חידון אימוג'ים! איזה סרט זה?*\n\n${item.emojis}\n\n_ענה באמצעות: !ניחוש [שם הסרט]_`);
+  await client.sendMessage(msg.from, t('games.emoji.prompt', { emojis: item.emojis }));
 };
 
 module.exports.guessEmoji = async function(client, msg, args) {
   const ans = db.get().emojiQuiz[msg.from];
-  if (!ans) return client.sendMessage(msg.from, 'אין חידון פעיל. שלח !חידון כדי להתחיל.');
+  if (!ans) return client.sendMessage(msg.from, t('games.emoji.noActive'));
   const userGuess = args.join(' ').trim();
-  if (!userGuess) return client.sendMessage(msg.from, 'נחש שם של סרט: !ניחוש [שם הסרט]');
+  if (!userGuess) return client.sendMessage(msg.from, t('games.emoji.noGuess'));
   if (userGuess.includes(ans) || ans.includes(userGuess)) {
     db.update(d => {
       delete d.emojiQuiz[msg.from];
       d.reputation[msg.from] = (d.reputation[msg.from] || 0) + 3;
     });
-    return client.sendMessage(msg.from, `🎉 *בול! התשובה היא אכן "${ans}"!* (+3 נקודות מוניטין)`);
+    return client.sendMessage(msg.from, t('games.emoji.correct', { ans, points: 3 }));
   }
-  await client.sendMessage(msg.from, '❌ לא נכון, נסה שוב!');
+  await client.sendMessage(msg.from, t('games.emoji.wrong'));
 };
 
-// קרב תורות נגד הבוט
+// קרב תורות נגד הבוט / turn-based battle vs the bot
 module.exports.battle = async function(client, msg, args) {
   const userId = msg.from;
   const action = args[0]?.toLowerCase();
 
   if (action === 'בטל') {
     db.update(d => { delete d.battle[userId]; });
-    return client.sendMessage(userId, '🛑 הקרב הופסק.');
+    return client.sendMessage(userId, t('games.battle.cancel'));
   }
 
   let b = db.get().battle[userId];
   if (!b || action === 'התחל') {
     b = { playerHp: 100, botHp: 100 };
     db.update(d => { d.battle[userId] = b; });
-    return client.sendMessage(userId, `⚔️ *קרב מול הבוט התחיל!*\n\n👤 אתה: 100/100 HP\n🤖 בוט: 100/100 HP\n\nבחר מהלך:\n▫️ \`!קרב התקפה\` (נזק בטוח)\n▫️ \`!קרב מיוחד\` (נזק גבוה או החטאה)\n▫️ \`!קרב ריפוי\` (+25 חיים)`);
+    return client.sendMessage(userId, t('games.battle.start'));
   }
 
   let log = '';
   if (action === 'התקפה') {
     const dmg = Math.floor(Math.random() * 10) + 15;
     b.botHp -= dmg;
-    log += `🗡️ תקפת את הבוט והורדת לו *${dmg}* חיים!\n`;
+    log += t('games.battle.attackLog', { dmg });
   } else if (action === 'מיוחד') {
     if (Math.random() < 0.6) {
       const dmg = Math.floor(Math.random() * 20) + 25;
       b.botHp -= dmg;
-      log += `💥 התקפה מיוחדת פגעה! הורדת לבוט *${dmg}* חיים!\n`;
+      log += t('games.battle.specialHit', { dmg });
     } else {
-      log += `💨 ההתקפה המיוחדת החטיאה!\n`;
+      log += t('games.battle.specialMiss');
     }
   } else if (action === 'ריפוי') {
     b.playerHp = Math.min(100, b.playerHp + 25);
-    log += `🧪 שתית שיקוי ונרפאת ב-*25* חיים!\n`;
+    log += t('games.battle.heal', { amount: 25 });
   } else {
-    return client.sendMessage(userId, 'בחר: !קרב [התקפה / מיוחד / ריפוי / בטל]');
+    return client.sendMessage(userId, t('games.battle.invalid'));
   }
 
   if (b.botHp <= 0) {
@@ -433,21 +472,21 @@ module.exports.battle = async function(client, msg, args) {
       delete d.battle[userId];
       d.reputation[userId] = (d.reputation[userId] || 0) + 5;
     });
-    return client.sendMessage(userId, `🏆 *ניצחת את הבוט בקרב!* זכית ב-+5 נקודות מוניטין!\n\n${log}`);
+    return client.sendMessage(userId, t('games.battle.win', { points: 5, log }));
   }
 
   // תור הבוט לתקוף
   const botDmg = Math.floor(Math.random() * 12) + 10;
   b.playerHp -= botDmg;
-  log += `🤖 הבוט החזיר מכה והוריד לך *${botDmg}* חיים!`;
+  log += t('games.battle.counter', { dmg: botDmg });
 
   if (b.playerHp <= 0) {
     db.update(d => { delete d.battle[userId]; });
-    return client.sendMessage(userId, `💀 *הובסת בקרב!* נסה שוב עם !קרב.\n\n${log}`);
+    return client.sendMessage(userId, t('games.battle.lose', { log }));
   }
 
   db.update(d => { d.battle[userId] = b; });
-  const status = `\n\n👤 אתה: ${b.playerHp}/100 HP\n🤖 בוט: ${b.botHp}/100 HP\n\nבחר מהלך: \`!קרב התקפה\` | \`!קרב מיוחד\` | \`!קרב ריפוי\``;
+  const status = t('games.battle.status', { php: b.playerHp, bhp: b.botHp });
   await client.sendMessage(userId, log + status);
 };
 
@@ -458,14 +497,14 @@ const DICE_FACES = ['⚀', '⚁', '⚂', '⚃', '⚄', '⚅'];
 
 function raceMove(pos, roll) {
   const target = pos + roll;
-  if (target > 100) return { pos, events: ['⏸️ עברת את 100 — נשארת במקום (צריך בדיוק 100!)'] };
+  if (target > 100) return { pos, events: [t('games.race.overshoot')] };
   let np = target;
   const events = [];
   if (RACE_LADDERS[np]) {
-    events.push(`🪜 *סולם!* ${np} ← ${RACE_LADDERS[np]}`);
+    events.push(t('games.race.ladder', { from: np, to: RACE_LADDERS[np] }));
     np = RACE_LADDERS[np];
   } else if (RACE_SNAKES[np]) {
-    events.push(`🐍 *נחש!* ${np} ← ${RACE_SNAKES[np]}`);
+    events.push(t('games.race.snake', { from: np, to: RACE_SNAKES[np] }));
     np = RACE_SNAKES[np];
   }
   return { pos: np, events };
@@ -486,27 +525,21 @@ module.exports.race = async function(client, msg, args) {
   const userId = msg.from;
   if (args[0]?.toLowerCase() === 'בטל') {
     db.update(d => { delete d.race[userId]; });
-    return client.sendMessage(userId, '🛑 המרוץ בוטל.');
+    return client.sendMessage(userId, t('games.race.cancel'));
   }
   db.update(d => { d.race[userId] = { player: 0, bot: 0 }; });
-  await client.sendMessage(userId,
-`🏁 *מרוץ סולמות ונחשים החל!* 🐍🪜
-━━━━━━━━━━━━━━
-🟢 אתה נגד 🔴 הבוט — מי שמגיע *בדיוק* ל-100 ראשון מנצח!
-סולמות מעלים 🪜 נחשים מורידים 🐍
-
-שלח \`!זרוק\` כדי לזרוק את הקובייה.`);
+  await client.sendMessage(userId, t('games.race.start'));
 };
 
 module.exports.raceRoll = async function(client, msg) {
   const userId = msg.from;
   const g = db.get().race[userId];
-  if (!g) return client.sendMessage(userId, 'אין מרוץ פעיל. שלח `!מרוץ` כדי להתחיל.');
+  if (!g) return client.sendMessage(userId, t('games.race.noRace'));
 
   const roll = Math.floor(Math.random() * 6) + 1;
   const pm = raceMove(g.player, roll);
   g.player = pm.pos;
-  let log = `🎲 זרקת: ${DICE_FACES[roll - 1]} (*${roll}*) → משבצת *${g.player}*`;
+  let log = t('games.race.roll', { face: DICE_FACES[roll - 1], roll, pos: g.player });
   pm.events.forEach(e => { log += '\n' + e; });
 
   if (g.player === 100) {
@@ -514,28 +547,22 @@ module.exports.raceRoll = async function(client, msg) {
       delete d.race[userId];
       d.reputation[userId] = (d.reputation[userId] || 0) + 4;
     });
-    return client.sendMessage(userId, `🏆 *ניצחת את המרוץ!* 🎉 (+4 נקודות מוניטין)\n\n${log}`);
+    return client.sendMessage(userId, t('games.race.win', { points: 4, log }));
   }
 
   const broll = Math.floor(Math.random() * 6) + 1;
   const bm = raceMove(g.bot, broll);
   g.bot = bm.pos;
-  log += `\n\n🤖 הבוט זרק: ${DICE_FACES[broll - 1]} (*${broll}*) → משבצת *${g.bot}*`;
+  log += '\n\n' + t('games.race.botRoll', { face: DICE_FACES[broll - 1], roll: broll, pos: g.bot });
   bm.events.forEach(e => { log += '\n' + e; });
 
   if (g.bot === 100) {
     db.update(d => { delete d.race[userId]; });
-    return client.sendMessage(userId, `🤖 *הבוט ניצח במרוץ!* נסה שוב עם \`!מרוץ\`\n\n${log}`);
+    return client.sendMessage(userId, t('games.race.botWin', { log }));
   }
 
   db.update(d => { d.race[userId] = g; });
-  await client.sendMessage(userId,
-`🏁 *מרוץ סולמות ונחשים* 🐍
-━━━━━━━━━━━━━━
-${log}
-━━━━━━━━━━━━━━
-${raceBar(g.player, g.bot)}
-🟢 אתה: *${g.player}* | 🔴 בוט: *${g.bot}*
-
-שלח \`!זרוק\` לתור הבא`);
+  await client.sendMessage(userId, t('games.race.board', {
+    log, bar: raceBar(g.player, g.bot), player: g.player, bot: g.bot
+  }));
 };

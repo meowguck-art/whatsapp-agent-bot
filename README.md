@@ -115,7 +115,13 @@ GEMINI_API_KEY=your_gemini_api_key_here
 BOT_OWNER_ID=user:YOUR_NUMBER
 BOT_MODE=public
 POLL_TIMEOUT=15
+BOT_LANG=he
 ```
+
+### 🌐 Language
+The bot speaks **Hebrew** by default. Set `BOT_LANG=en` in `.env` to switch all
+bot messages, menus, games and errors to **English**. Command names themselves
+(e.g. `!שאל`, `!יוטיוב`) stay the same in both languages.
 
 ### 4. Start the bot:
 ```bash

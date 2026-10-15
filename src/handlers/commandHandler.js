@@ -6,6 +6,7 @@ const general = require('../commands/general');
 const owner = require('../commands/owner');
 const { checkCooldown } = require('../middlewares/cooldown');
 const { checkAuth } = require('../middlewares/auth');
+const { t } = require('../i18n');
 
 const map = {
   // תפריט ודפדוף
@@ -103,7 +104,7 @@ async function handleCommand(client, msg, rawData) {
   if (!handler) return false;
 
   if (!checkCooldown(msg.from)) {
-    await client.sendMessage(msg.from, '⏳ המתן 5 שניות בין פקודות (Anti-Spam).');
+    await client.sendMessage(msg.from, t('handler.cooldown'));
     return true;
   }
 
@@ -114,7 +115,7 @@ async function handleCommand(client, msg, rawData) {
   }
 
   if (ownerCmds.includes(cmd) && !auth.isOwner) {
-    await client.sendMessage(msg.from, '⛔ פקודה לבעלים בלבד.');
+    await client.sendMessage(msg.from, t('handler.ownerOnly'));
     return true;
   }
 
@@ -123,8 +124,8 @@ async function handleCommand(client, msg, rawData) {
   try {
     await handler(client, msg, args, rawData);
   } catch (err) {
-    console.error(`שגיאה בביצוע !${cmd}:`, err);
-    await client.sendMessage(msg.from, 'חלה שגיאה בביצוע הפקודה.');
+    console.error(t('handler.cmdLog', { cmd }), err);
+    await client.sendMessage(msg.from, t('handler.cmdError'));
   }
 
   return true;

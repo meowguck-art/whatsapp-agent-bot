@@ -1,4 +1,5 @@
 const axios = require('axios');
+const { t, pick } = require('../i18n');
 
 const cityMap = {
   'ירושלים': 'IL-Jerusalem',
@@ -9,106 +10,25 @@ const cityMap = {
   'פתח תקווה': 'IL-Petah Tikva'
 };
 
+const back = t('menu.back');
 const pages = {
-  // עמוד ראשי
-  main: 
-`━━━━━━━━━━━━━━━━━━━━━━
-   🤖 *תפריט הקטגוריות* 🤖
-━━━━━━━━━━━━━━━━━━━━━━
-שלום! בחר קטגוריה להצגת הפקודות:
+  // עמוד ראשי / main page
+  main: t('menu.main'),
 
-1️⃣ 🧠 *בינה מלאכותית (AI)*
-2️⃣ 🎬 *מדיה, שירים והורדות*
-3️⃣ 🛠️ *כלים, מידע ויומיום*
-4️⃣ 🎮 *משחקים, פנאי ומוניטין*
-5️⃣ 👑 *מערכת ומנהל*
+  // 1. בינה מלאכותית / AI
+  '1': t('menu.p1', { back }),
 
-━━━━━━━━━━━━━━━━━━━━━━
-💬 *שלח \`!1\` עד \`!5\` (או \`!תפריט [מספר]\`) לצפייה בעמוד.*`,
+  // 2. מדיה והורדות / media
+  '2': t('menu.p2', { back }),
 
-  // 1. בינה מלאכותית
-  '1': 
-`━━━━━━━━━━━━━━━━━━━━━━
-   🧠 *בינה מלאכותית (AI)* 🧠
-━━━━━━━━━━━━━━━━━━━━━━
-▫️ \`!שאל [שאלה]\` • שיחה חופשית עם Gemini
-▫️ \`!סכם\` • סיכום טקסטים (בתגובה להודעה)
-▫️ \`!דמיין [תיאור]\` • יצירת תיאור מפורט לתמונה
-▫️ \`!תרגם [שפה] [טקסט]\` • תרגום מהיר לכל שפה
+  // 3. כלים ומידע יומי / tools
+  '3': t('menu.p3', { back }),
 
-_חזרה לתפריט הראשי: שלח \`!תפריט\`_`,
+  // 4. משחקים וקהילה / games
+  '4': t('menu.p4', { back }),
 
-  // 2. מדיה והורדות
-  '2': 
-`━━━━━━━━━━━━━━━━━━━━━━
-   🎬 *מדיה, שירים והורדות* 🎬
-━━━━━━━━━━━━━━━━━━━━━━
-▫️ \`!טיקטוק [קישור]\` • הורדת סרטון בלי סימן מים
-▫️ \`!אינסטה [קישור]\` • הורדת סרטוני Reels
-▫️ \`!יוטיוב [שיר]\` • חיפוש ביוטיוב: 10 תוצאות לבחירה, ואז MP3 / הודעה קולית / קליפ
-▫️ \`!חתוך [התחלה] [סיום]\` • חיתוך שיר/סרטון בתגובה
-▫️ \`!פילטר [שחורלבן/נגטיב/טשטוש]\` • עיבוד תמונה
-▫️ \`!qr [טקסט/קישור]\` • יצירת קוד QR איכותי
-▫️ \`!סטיקר\` / \`!s\` • הפיכת תמונה/סרטון לסטיקר
-▫️ \`!למי\` / \`!tofile\` • שליחת מדיה כמסמך ללא דחיסה
-
-_חזרה לתפריט הראשי: שלח \`!תפריט\`_`,
-
-  // 3. כלים ומידע יומי
-  '3': 
-`━━━━━━━━━━━━━━━━━━━━━━
-   🛠️ *כלים, מידע ויומיום* 🛠️
-━━━━━━━━━━━━━━━━━━━━━━
-▫️ \`!מזגאוויר [עיר]\` • תחזית מזג אוויר חיה
-▫️ \`!חדשות\` • 5 מבזקים אחרונים מ-Ynet
-▫️ \`!שער\` • שערי דולר, אירו, ביטקוין ואת'ריום
-▫️ \`!שבת [עיר]\` • כניסת/יציאת שבת ופרשה
-▫️ \`!רשימה [הוסף/מחק/נקה]\` • רשימת קניות/משימות
-▫️ \`!תזכורת [זמן] [דק/שע/ימ] [הודעה]\` • קביעת תזכורת
-▫️ \`!בחר [אפשרות 1, 2...]\` • גלגל מזל והחלטות
-▫️ \`!קיצור [קישור]\` • קיצור כתובת דרך TinyURL
-▫️ \`!לינק [מספר]\` • קישור ישיר לצ'אט בוואטסאפ
-▫️ \`!מחשבון [תרגיל]\` • פתרון ביטוי מתמטי
-▫️ \`!חיפוש [ערך]\` • קישור ישיר לחיפוש בגוגל
-
-_חזרה לתפריט הראשי: שלח \`!תפריט\`_`,
-
-  // 4. משחקים וקהילה
-  '4': 
-`━━━━━━━━━━━━━━━━━━━━━━
-   🎮 *משחקים, פנאי וקהילה* 🎮
-━━━━━━━━━━━━━━━━━━━━━━
-▫️ \`!בלקג'ק\` • משחק 21 מול הבוט (\`!קלף\` / \`!עמוד\`)
-▫️ \`!קרב\` • קרב RPG תורות מול הבוט (\`!קרב התקפה\`)
-▫️ \`!תלוי [אות]\` • איש תלוי בעברית
-▫️ \`!חידון\` • חידון אימוג'ים (\`!ניחוש [שם]\`)
-▫️ \`!איקסעיגול [1-9]\` • איקס-עיגול מול הבוט
-▫️ \`!מרוץ\` • מרוץ סולמות ונחשים ל-100 (\`!זרוק\` לזריקה)
-▫️ \`!טריוויה\` • שאלת טריוויה אמריקאית (\`!תשובה\`)
-▫️ \`!קובייה\` / \`!מטבע\` • הטלת קובייה או מטבע
-▫️ \`!בדיחה\` / \`!ציטוט\` / \`!הפוך\` • בידור מהיר
-▫️ \`!תודה\` • הענקת נקודת מוניטין (בתגובה להודעה)
-▫️ \`!מוניטין\` / \`!טופ5\` • טבלאות ניקוד מובילים
-
-_חזרה לתפריט הראשי: שלח \`!תפריט\`_`,
-
-  // 5. מערכת ומנהל
-  '5': 
-`━━━━━━━━━━━━━━━━━━━━━━
-   👑 *מערכת וניהול הבוט* 👑
-━━━━━━━━━━━━━━━━━━━━━━
-▫️ \`!פינג\` • בדיקת מהירות תגובת הבוט
-▫️ \`!אני\` • פרטי החשבון והמזהה שלך
-▫️ \`!ויקיפדיה [ערך]\` • תקציר ערך מויקיפדיה
-▫️ \`!שעה\` / \`!תאריך\` • שעון ותאריך בישראל
-▫️ \`!סטטוס\` • הצגת זמן פעילות ומצב הבוט (בעלים)
-▫️ \`!גרסה\` • מידע על גרסת המערכת
-▫️ \`!בעלים\` • הצגת מזהה בעל הבוט
-▫️ \`!שנהמצב [self/authorized/public]\` • רמת גישה
-▫️ \`!הוסףמורשהגלובלי\` / \`!הסרמורשהגלובלי\`
-▫️ \`!רשימהגלובלית\` • צפייה ברשימת ה-VIP
-
-_חזרה לתפריט הראשי: שלח \`!תפריט\`_`
+  // 5. מערכת ומנהל / admin
+  '5': t('menu.p5', { back })
 };
 
 module.exports = {
@@ -124,27 +44,23 @@ module.exports = {
     try {
       await client.sendInteractiveButtons(
         msg.from,
-        '🤖 *הדגמת כפתורים אינטראקטיביים*\nלחץ על כפתור — כל כפתור מפעיל פקודה אמיתית של הבוט:',
+        t('general.buttons.title'),
         [
-          { id: '1', title: '🧠 בינה מלאכותית' },
-          { id: 'ping', title: '🏓 בדיקת פינג' },
-          { id: 'בדיחה', title: '😂 ספר בדיחה' }
+          { id: '1', title: t('general.buttons.ai') },
+          { id: 'ping', title: t('general.buttons.ping') },
+          { id: 'בדיחה', title: t('general.buttons.joke') }
         ],
-        { footer: 'נשלח ישירות, בלי תבנית מאושרת ✨' }
+        { footer: t('general.buttons.footer') }
       );
       await client.sendVoiceCallButton(
         msg.from,
-        '📞 *צריך עזרה אנושית?*\nלחץ על הכפתור כדי להתחיל שיחת קול בוואטסאפ:',
-        { displayText: 'התקשר עכשיו' }
+        t('general.buttons.callBody'),
+        { displayText: t('general.buttons.callNow') }
       );
     } catch (err) {
       const code = err.response?.data?.error?.code;
       if (code === 131009) {
-        await client.sendMessage(msg.from,
-          '⚠️ *כפתורים לחיצים עדיין לא נתמכים*\n' +
-          'פלטפורמת ה-Agent של וואטסאפ (שעליה הבוט פועל) מאפשרת כרגע רק טקסט ומדיה — לא כפתורים ולא כפתור שיחה.\n' +
-          'הקוד כבר מוכן, וברגע שוואטסאפ תפתח את האפשרות זה יעבוד אוטומטית.\n\n' +
-          'בינתיים: שלח `!תפריט` ובחר מספר מהתפריט 👆');
+        await client.sendMessage(msg.from, t('general.buttons.unsupported'));
         return;
       }
       throw err;
@@ -158,7 +74,7 @@ module.exports = {
   async menu5(client, msg) { await client.sendMessage(msg.from, pages['5'], msg.id); },
 
   async shabbat(client, msg, args) {
-    const rawCity = args.join(' ').trim() || 'ירושלים';
+    const rawCity = args.join(' ').trim() || pick('ירושלים', 'Jerusalem');
     const knownCity = cityMap[rawCity];
     const cityCode = knownCity || 'IL-Jerusalem';
     try {
@@ -168,38 +84,49 @@ module.exports = {
       items.forEach(item => {
         if (item.category === 'candles') candle = item.title;
         if (item.category === 'havdalah') havdalah = item.title;
-        if (item.category === 'parashat') parasha = item.hebrew || item.title;
+        if (item.category === 'parashat') parasha = pick(item.hebrew || item.title, item.title || item.hebrew);
       });
-      const fallbackNote = knownCity ? '' : '\n⚠️ _לעיר זו אין מיפוי מדויק - מוצגים זמני ירושלים._';
-      await client.sendMessage(msg.from, `🕯️ *זמני שבת קודש - ${rawCity}* 🕯️\n━━━━━━━━━━━━━━━━━━━\n📖 *פרשה:* ${parasha}\n🕯️ *כניסה:* ${candle.replace('Candle lighting: ', '')}\n✨ *יציאה:* ${havdalah.replace('Havdalah: ', '')}\n━━━━━━━━━━━━━━━━━━━${fallbackNote}\nשבת שלום!`);
+      const note = knownCity ? '' : t('general.shabbat.fallback');
+      await client.sendMessage(msg.from, t('general.shabbat.result', {
+        city: rawCity,
+        parasha,
+        candle: candle.replace('Candle lighting: ', ''),
+        havdalah: havdalah.replace('Havdalah: ', ''),
+        note
+      }));
     } catch {
-      await client.sendMessage(msg.from, '❌ שגיאה בקבלת זמני שבת.');
+      await client.sendMessage(msg.from, t('general.shabbat.error'));
     }
   },
 
   async ping(client, msg) {
     const delay = Math.abs(Date.now() - parseInt(msg.timestamp, 10) * 1000);
-    await client.sendMessage(msg.from, `🏓 פונג! זמן תגובה: *${delay}ms*`, msg.id);
+    await client.sendMessage(msg.from, t('general.ping', { delay }), msg.id);
   },
   async me(client, msg, args, rawMsg) {
-    await client.sendMessage(msg.from, `👤 מזהה: ${msg.from}\nשם: ${rawMsg.contact?.profile?.name || 'לא ידוע'}`, msg.id);
+    await client.sendMessage(msg.from,
+      t('general.me', { id: msg.from, name: rawMsg.contact?.profile?.name || t('general.unknown') }), msg.id);
   },
   async wiki(client, msg, args) {
     const q = args.join(' ');
-    if (!q) return client.sendMessage(msg.from, 'שימוש: !ויקיפדיה [מונח]');
+    if (!q) return client.sendMessage(msg.from, t('general.wiki.usage'));
     try {
       const res = await axios.get(`https://he.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(q)}`);
-      if (res.data.extract) return client.sendMessage(msg.from, `📖 *${res.data.title}*\n\n${res.data.extract}`);
+      if (res.data.extract) return client.sendMessage(msg.from, t('general.wiki.result', { title: res.data.title, extract: res.data.extract }));
     } catch {}
     await client.sendMessage(msg.from, `📖 https://he.wikipedia.org/wiki/${encodeURIComponent(q)}`);
   },
   async time(client, msg) {
-    await client.sendMessage(msg.from, `🕒 השעה: *${new Date().toLocaleTimeString('he-IL', { timeZone: 'Asia/Jerusalem' })}*`);
+    await client.sendMessage(msg.from, t('general.time', {
+      time: new Date().toLocaleTimeString(pick('he-IL', 'en-US'), { timeZone: 'Asia/Jerusalem' })
+    }));
   },
   async date(client, msg) {
-    await client.sendMessage(msg.from, `📅 התאריך: *${new Date().toLocaleDateString('he-IL', { timeZone: 'Asia/Jerusalem' })}*`);
+    await client.sendMessage(msg.from, t('general.date', {
+      date: new Date().toLocaleDateString(pick('he-IL', 'en-US'), { timeZone: 'Asia/Jerusalem' })
+    }));
   },
   async deleteMsg(client, msg) {
-    await client.sendMessage(msg.from, 'ℹ️ מחיקת הודעת בוט אצל כולם מבוצעת ישירות באפליקציה.');
+    await client.sendMessage(msg.from, t('general.deleteMsg'));
   }
 };

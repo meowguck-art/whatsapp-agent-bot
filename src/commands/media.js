@@ -5,6 +5,7 @@ const util = require('util');
 const execFilePromise = util.promisify(execFile);
 const axios = require('axios');
 const db = require('../services/database');
+const { t } = require('../i18n');
 
 // אבטחה: כל הפקודות החיצוניות רצות דרך execFile עם מערך ארגומנטים (ללא shell),
 // כך שקלט מהמשתמש לעולם לא יכול להפוך לפקודת shell (מניעת command injection).
@@ -47,11 +48,13 @@ async function searchYoutube(query) {
 }
 
 function ytFormatName(fmt) {
-  return fmt === 'audio' ? '🎵 קובץ שמע (MP3)' : fmt === 'voice' ? '🎤 הודעה קולית' : '🎬 קליפ וידאו (MP4)';
+  return fmt === 'audio' ? t('media.yt.formatAudio') : fmt === 'voice' ? t('media.yt.formatVoice') : t('media.yt.formatVideo');
 }
 
 async function downloadAndSendYoutube(client, msg, url, format, title = '') {
-  await client.sendMessage(msg.from, `⏳ מוריד ${ytFormatName(format)}${title ? `:\n"${title}"` : ''}\nאנא המתן...`);
+  await client.sendMessage(msg.from, t('media.yt.downloading', {
+    format: ytFormatName(format), title: title ? `:\n"${title}"` : ''
+  }));
   const tempDir = ensureTempDir();
   const stamp = Date.now();
   try {
@@ -61,7 +64,7 @@ async function downloadAndSendYoutube(client, msg, url, format, title = '') {
       await execFilePromise('yt-dlp', [
         ...YT_ARGS, ...YT_DL_ARGS, '-f', 'best[ext=mp4]/mp4', '-o', filePath, url, '--max-filesize', '15M'
       ], EXEC_OPTS);
-      mime = 'video/mp4'; sendType = 'video'; caption = '🎬 הורד בהצלחה!';
+      mime = 'video/mp4'; sendType = 'video'; caption = t('media.done');
     } else {
       const mp3Path = path.join(tempDir, `yta_${stamp}.mp3`);
       await execFilePromise('yt-dlp', [
@@ -86,17 +89,14 @@ async function downloadAndSendYoutube(client, msg, url, format, title = '') {
   } catch (e) {
     console.error('[YouTube download error]', e.message);
     const errText = /429|Too Many Requests/i.test(e.message || '')
-      ? '⏳ יוטיוב חוסם זמנית (יותר מדי בקשות). חכה כמה דקות ונסה שוב.'
-      : '❌ שגיאה בהורדה מיוטיוב.';
+      ? t('media.yt.rateLimit')
+      : t('media.yt.error');
     await client.sendMessage(msg.from, errText);
   }
 }
 
 function ytFormatMenu(video) {
-  return `🎵 *${video.title}*\n\nבחר פורמט — שלח:\n` +
-    `\`!יוטיוב שמע\` — קובץ MP3\n` +
-    `\`!יוטיוב קולי\` — הודעה קולית 🎤\n` +
-    `\`!יוטיוב וידאו\` — קליפ MP4`;
+  return t('media.yt.formatMenu', { title: video.title });
 }
 
 function ytParseFormat(word) {
@@ -110,14 +110,14 @@ module.exports = {
   // חיתוך מדיה
   async trimMedia(client, msg, args, rawMsg) {
     if (args.length < 2) {
-      return client.sendMessage(msg.from, 'שימוש: הגב על שיר או סרטון וכתוב:\n!חתוך [התחלה] [סיום]\nדוגמה: !חתוך 00:10 00:30 או !חתוך 10 30');
+      return client.sendMessage(msg.from, t('media.trim.usage'));
     }
 
     const start = args[0];
     const end = args[1];
 
     if (!validTimestamp(start) || !validTimestamp(end)) {
-      return client.sendMessage(msg.from, '❌ פורמט זמן לא תקין. דוגמה: !חתוך 00:10 00:30');
+      return client.sendMessage(msg.from, t('media.trim.invalidTime'));
     }
 
     let mediaId = rawMsg.audio?.id || rawMsg.video?.id;
@@ -133,11 +133,11 @@ module.exports = {
     }
 
     if (!mediaId) {
-      return client.sendMessage(msg.from, '❌ עליך להגיב (Reply) ישירות על קובץ שמע או סרטון שברצונך לחתוך.');
+      return client.sendMessage(msg.from, t('media.trim.noMedia'));
     }
 
     try {
-      await client.sendMessage(msg.from, `⏳ חותך את הקובץ מ-${start} עד ${end}, אנא המתן...`);
+      await client.sendMessage(msg.from, t('media.trim.working', { start, end }));
       const meta = await client.getMediaMetadata(mediaId);
       const buffer = await client.downloadMediaBytes(meta.url);
 
@@ -163,12 +163,12 @@ module.exports = {
       const mime = type === 'video' ? 'video/mp4' : 'audio/mpeg';
       const uploadedId = await client.uploadMedia(cutBuffer, mime, `cut.${inExt}`);
 
-      await client.sendMedia(msg.from, type, uploadedId, `✂️ נחתך בהצלחה (${start} - ${end})`);
+      await client.sendMedia(msg.from, type, uploadedId, t('media.trim.done', { start, end }));
 
       try { fs.unlinkSync(inFile); fs.unlinkSync(outFile); } catch {}
     } catch (e) {
       console.error(e);
-      await client.sendMessage(msg.from, '❌ שגיאה בחיתוך הקובץ. ודא שציינת זמנים תקינים (למשל: !חתוך 00:10 00:30).');
+      await client.sendMessage(msg.from, t('media.trim.error'));
     }
   },
 
@@ -184,10 +184,10 @@ module.exports = {
       }
     }
 
-    if (!mediaId) return client.sendMessage(msg.from, '❌ שלח תמונה עם הכיתוב *!סטיקר*, או הגב על תמונה.');
+    if (!mediaId) return client.sendMessage(msg.from, t('media.sticker.noMedia'));
 
     try {
-      await client.sendMessage(msg.from, '⏳ מעבד את הסטיקר...');
+      await client.sendMessage(msg.from, t('media.sticker.working'));
       const meta = await client.getMediaMetadata(mediaId);
       const buffer = await client.downloadMediaBytes(meta.url);
       const tempDir = ensureTempDir();
@@ -207,7 +207,7 @@ module.exports = {
       await client.sendMedia(msg.from, 'sticker', uploadedId);
       try { fs.unlinkSync(inputPath); fs.unlinkSync(outputPath); } catch {}
     } catch (e) {
-      await client.sendMessage(msg.from, '❌ שגיאה בהמרת הסטיקר.');
+      await client.sendMessage(msg.from, t('media.sticker.error'));
     }
   },
 
@@ -225,10 +225,10 @@ module.exports = {
       }
     }
 
-    if (!mediaId) return client.sendMessage(msg.from, '❌ הגב עם *!למי* על תמונה או קובץ.');
+    if (!mediaId) return client.sendMessage(msg.from, t('media.tofile.noMedia'));
 
     try {
-      await client.sendMessage(msg.from, '⏳ מכין את הקובץ כמסמך...');
+      await client.sendMessage(msg.from, t('media.tofile.working'));
       const meta = await client.getMediaMetadata(mediaId);
       const buffer = await client.downloadMediaBytes(meta.url);
       const filename = `file_${Date.now()}.${ext}`;
@@ -236,14 +236,14 @@ module.exports = {
       const uploadedId = await client.uploadMedia(buffer, mimeType, filename);
       await client.sendMedia(msg.from, 'document', uploadedId, null, filename);
     } catch (e) {
-      await client.sendMessage(msg.from, '❌ שגיאה בהמרת הקובץ למסמך.');
+      await client.sendMessage(msg.from, t('media.tofile.error'));
     }
   },
 
   async youtube(client, msg, args) {
     const raw = args.join(' ').trim();
     const userId = msg.from;
-    if (!raw) return client.sendMessage(msg.from, 'שימוש: !יוטיוב [שם שיר או קישור]\nדוגמה: !יוטיוב עומר אדם');
+    if (!raw) return client.sendMessage(msg.from, t('media.yt.usage'));
 
     // קישור ישיר → הורדה מיידית כקובץ שמע (התנהגות קודמת)
     if (/^https?:\/\//i.test(raw)) {
@@ -266,7 +266,7 @@ module.exports = {
     if (numMatch && state && state.results.length) {
       const n = parseInt(numMatch[1], 10);
       if (n < 1 || n > state.results.length)
-        return client.sendMessage(msg.from, `בחר מספר בין 1 ל-${state.results.length}.`);
+        return client.sendMessage(msg.from, t('media.yt.range', { max: state.results.length }));
       const video = state.results[n - 1];
       if (numMatch[2]) {
         const fmt = ytParseFormat(numMatch[2]);
@@ -279,28 +279,27 @@ module.exports = {
     }
 
     // שלב 1: חיפוש חדש → 10 תוצאות ממוספרות
-    await client.sendMessage(msg.from, `🔎 מחפש "${raw}"...`);
+    await client.sendMessage(msg.from, t('media.yt.searching', { q: raw }));
     let results;
     try {
       results = await searchYoutube(raw);
     } catch (e) {
       console.error('[YouTube search error]', e.message);
-      return client.sendMessage(msg.from, '❌ שגיאה בחיפוש ביוטיוב.');
+      return client.sendMessage(msg.from, t('media.yt.searchError'));
     }
-    if (!results.length) return client.sendMessage(msg.from, 'לא נמצאו תוצאות, נסה ניסוח אחר.');
+    if (!results.length) return client.sendMessage(msg.from, t('media.yt.noResults'));
     ytSearchState.set(userId, { results, selected: null, ts: Date.now() });
     const list = results.map((v, i) =>
       `${i + 1}. ${v.title}${v.duration && v.duration !== 'NA' ? ` (${v.duration})` : ''}`
     ).join('\n');
-    return client.sendMessage(msg.from,
-      `🎵 *תוצאות חיפוש:*\n\n${list}\n\nשלח \`!יוטיוב [מספר]\` לבחירה\nדוגמה: \`!יוטיוב 3\` או ישירות \`!יוטיוב 3 קולי\``);
+    return client.sendMessage(msg.from, t('media.yt.results', { list }));
   },
 
   async downloadVideo(client, msg, args) {
     const url = args[0];
-    if (!url || !/^https?:\/\//i.test(url)) return client.sendMessage(msg.from, 'שימוש: !טיקטוק [קישור]');
+    if (!url || !/^https?:\/\//i.test(url)) return client.sendMessage(msg.from, t('media.video.usage'));
 
-    await client.sendMessage(msg.from, '⏳ מוריד את הסרטון, רק רגע...');
+    await client.sendMessage(msg.from, t('media.video.working'));
     const tempDir = ensureTempDir();
 
     const outFile = path.join(tempDir, `vid_${Date.now()}.mp4`);
@@ -310,37 +309,37 @@ module.exports = {
       ], EXEC_OPTS);
       const videoBuffer = fs.readFileSync(outFile);
       const uploadedId = await client.uploadMedia(videoBuffer, 'video/mp4', 'video.mp4');
-      await client.sendMedia(msg.from, 'video', uploadedId, '🎬 הורד בהצלחה!');
+      await client.sendMedia(msg.from, 'video', uploadedId, t('media.done'));
       try { fs.unlinkSync(outFile); } catch {}
     } catch (e) {
-      await client.sendMessage(msg.from, '❌ שגיאה בהורדת הסרטון.');
+      await client.sendMessage(msg.from, t('media.video.error'));
     }
   },
 
   async qrCode(client, msg, args) {
     const text = args.join(' ');
-    if (!text) return client.sendMessage(msg.from, 'שימוש: !qr [טקסט או קישור]');
+    if (!text) return client.sendMessage(msg.from, t('media.qr.usage'));
     try {
       const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=512x512&data=${encodeURIComponent(text)}`;
       const res = await axios.get(qrUrl, { responseType: 'arraybuffer' });
       const uploadedId = await client.uploadMedia(Buffer.from(res.data), 'image/png', 'qr.png');
-      await client.sendMedia(msg.from, 'image', uploadedId, `📱 QR: "${text}"`);
+      await client.sendMedia(msg.from, 'image', uploadedId, t('media.qr.caption', { text }));
     } catch (e) {
-      await client.sendMessage(msg.from, '❌ שגיאה ביצירת קוד QR.');
+      await client.sendMessage(msg.from, t('media.qr.error'));
     }
   },
 
   async reminder(client, msg, args) {
-    if (args.length < 3) return client.sendMessage(msg.from, 'שימוש: !תזכורת [זמן] [דק/שע/ימ] [הודעה]');
+    if (args.length < 3) return client.sendMessage(msg.from, t('media.reminder.usage'));
     const amount = parseInt(args[0], 10);
     const unit = args[1];
     const text = args.slice(2).join(' ');
 
     if (!Number.isFinite(amount) || amount <= 0) {
-      return client.sendMessage(msg.from, '❌ הזמן חייב להיות מספר חיובי. דוגמה: !תזכורת 10 דק לקנות חלב');
+      return client.sendMessage(msg.from, t('media.reminder.badAmount'));
     }
     if (!['דק', 'שע', 'ימ'].some(u => unit.startsWith(u))) {
-      return client.sendMessage(msg.from, '❌ יחידת זמן לא תקינה. השתמש ב: דק / שע / ימ');
+      return client.sendMessage(msg.from, t('media.reminder.badUnit'));
     }
 
     let ms = amount * 60 * 1000;
@@ -352,45 +351,45 @@ module.exports = {
       if (!Array.isArray(d.reminders)) d.reminders = [];
       d.reminders.push({ to: msg.from, text, dueTime });
     });
-    await client.sendMessage(msg.from, `✅ נקבעה תזכורת לעוד ${amount} ${unit}.`);
+    await client.sendMessage(msg.from, t('media.reminder.set', { amount, unit }));
   },
 
   async shorten(client, msg, args) {
     const url = args[0];
-    if (!url) return client.sendMessage(msg.from, 'נא להזין קישור.');
+    if (!url) return client.sendMessage(msg.from, t('media.shorten.usage'));
     try {
       const res = await axios.get(`https://tinyurl.com/api-create.php?url=${encodeURIComponent(url)}`);
-      await client.sendMessage(msg.from, `🔗 קישור מקוצר: ${res.data}`);
+      await client.sendMessage(msg.from, t('media.shorten.ok', { url: res.data }));
     } catch {
-      await client.sendMessage(msg.from, 'שגיאה בקיצור.');
+      await client.sendMessage(msg.from, t('media.shorten.error'));
     }
   },
 
   async link(client, msg, args) {
     const num = (args[0] || '').replace(/[^0-9]/g, '');
-    if (!num) return client.sendMessage(msg.from, 'נא להזין מספר.');
+    if (!num) return client.sendMessage(msg.from, t('media.link.usage'));
     await client.sendMessage(msg.from, `📲 https://wa.me/${num}`);
   },
 
   async calc(client, msg, args) {
     const expr = args.join('');
-    if (!/^[0-9+\-*/.() ]+$/.test(expr)) return client.sendMessage(msg.from, 'ביטוי לא חוקי.');
+    if (!/^[0-9+\-*/.() ]+$/.test(expr)) return client.sendMessage(msg.from, t('media.calc.invalid'));
     try {
       const result = Function(`'use strict'; return (${expr})`)();
-      await client.sendMessage(msg.from, `🔢 תוצאה: *${result}*`);
+      await client.sendMessage(msg.from, t('media.calc.result', { result }));
     } catch {
-      await client.sendMessage(msg.from, 'שגיאה בחישוב.');
+      await client.sendMessage(msg.from, t('media.calc.error'));
     }
   },
 
   async search(client, msg, args) {
     const q = args.join(' ');
-    if (!q) return client.sendMessage(msg.from, 'הזן ערך.');
+    if (!q) return client.sendMessage(msg.from, t('media.search.usage'));
     await client.sendMessage(msg.from, `🔍 https://www.google.com/search?q=${encodeURIComponent(q)}`);
   }
 };
 
-// פילטרים גרפיים לתמונות
+// פילטרים גרפיים לתמונות / image filters
 module.exports.filter = async function(client, msg, args, rawMsg) {
   const type = args[0]?.toLowerCase();
   const filterMap = {
@@ -403,7 +402,7 @@ module.exports.filter = async function(client, msg, args, rawMsg) {
   };
 
   if (!filterMap[type]) {
-    return client.sendMessage(msg.from, 'שימוש: הגב על תמונה עם:\n!פילטר [שחורלבן / נגטיב / טשטוש]');
+    return client.sendMessage(msg.from, t('media.filter.usage'));
   }
 
   let mediaId = rawMsg.image?.id;
@@ -414,10 +413,10 @@ module.exports.filter = async function(client, msg, args, rawMsg) {
     }
   }
 
-  if (!mediaId) return client.sendMessage(msg.from, '❌ עליך להגיב (Reply) על תמונה.');
+  if (!mediaId) return client.sendMessage(msg.from, t('media.filter.noMedia'));
 
   try {
-    await client.sendMessage(msg.from, '⏳ מפעיל פילטר על התמונה...');
+    await client.sendMessage(msg.from, t('media.filter.working'));
     const meta = await client.getMediaMetadata(mediaId);
     const buffer = await client.downloadMediaBytes(meta.url);
 
@@ -431,11 +430,11 @@ module.exports.filter = async function(client, msg, args, rawMsg) {
 
     const outBuffer = fs.readFileSync(outFile);
     const uploadedId = await client.uploadMedia(outBuffer, 'image/jpeg', 'filtered.jpg');
-    await client.sendMedia(msg.from, 'image', uploadedId, `✨ פילטר ${type} הופעל בהצלחה!`);
+    await client.sendMedia(msg.from, 'image', uploadedId, t('media.filter.done', { type }));
 
     try { fs.unlinkSync(inFile); fs.unlinkSync(outFile); } catch {}
   } catch (e) {
     console.error(e);
-    await client.sendMessage(msg.from, '❌ שגיאה בהפעלת הפילטר.');
+    await client.sendMessage(msg.from, t('media.filter.error'));
   }
 };

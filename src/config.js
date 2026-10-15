@@ -7,5 +7,7 @@ module.exports = {
   ownerId: process.env.BOT_OWNER_ID,
   defaultMode: process.env.BOT_MODE || 'public',
   pollTimeout: parseInt(process.env.POLL_TIMEOUT || '15', 10),
+  // Bot language: 'he' (Hebrew, default) or 'en' (English). Controlled by BOT_LANG.
+  lang: (process.env.BOT_LANG || 'he').toLowerCase().startsWith('en') ? 'en' : 'he',
   startTime: Date.now()
 };

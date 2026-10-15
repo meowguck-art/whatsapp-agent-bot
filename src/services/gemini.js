@@ -1,9 +1,10 @@
 const axios = require('axios');
 const config = require('../config');
+const { t } = require('../i18n');
 
 async function askGemini(prompt) {
   if (!config.geminiApiKey) {
-    return "שגיאה: לא הוגדר GEMINI_API_KEY בקובץ .env";
+    return t('gemini.noKey');
   }
   try {
     const res = await axios.post(
@@ -15,7 +16,7 @@ async function askGemini(prompt) {
     );
     return res.data.candidates[0].content.parts[0].text;
   } catch (e) {
-    return "שגיאה בתקשורת עם הבינה המלאכותית: " + (e.response?.data?.error?.message || e.message);
+    return t('gemini.commError', { err: e.response?.data?.error?.message || e.message });
   }
 }
 

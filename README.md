@@ -2,8 +2,8 @@
 
 # 🤖 WhatsApp Agent Bot Platform v1
 
-### בוט וואטסאפ מודולרי, מתקדם ורב-עוצמה המבוסס על ה-API הרשמי של WhatsApp Agent Platform
-_נבנה ומותאם במיוחד עבור הרצה נקייה ב-Termux, Linux וסביבות Node.js_
+### A modular, advanced and powerful WhatsApp bot built on the official WhatsApp Agent Platform API
+_Built and optimized for clean runs on Termux, Linux and Node.js environments_
 
 [![Node.js](https://img.shields.io/badge/Node.js-20%2B-green.svg?style=for-the-badge&logo=node.js)](https://nodejs.org/)
 [![WhatsApp Agent Platform](https://img.shields.io/badge/WhatsApp-Agent%20v1-25D366.svg?style=for-the-badge&logo=whatsapp)](https://api.whatsapp.com/agent/v1)
@@ -15,99 +15,99 @@ _נבנה ומותאם במיוחד עבור הרצה נקייה ב-Termux, Linu
 
 ---
 
-## 🌟 סקירה כללית
+## 🌟 Overview
 
-הפרויקט נבנה על פי מפרט ה-API של WhatsApp Agent Platform v1. הוא כולל:
-* מנגנון Long-Polling יעיל עם מעקב offsets מדויק.
-* ניהול תור הודעות מובנה המונע חריגה ממגבלת ה-Rate Limit (12 בקשות בדקה).
-* מסד נתונים מקומי מהיר מבוסס JSON שאינו דורש התקנת שרתי SQL כבדים.
-* ארכיטקטורה מודולרית לחלוטין המאפשרת הוספת פקודות בקלות.
-
----
-
-## 🚀 רשימת הפקודות והיכולות
-
-### 🧠 בינה מלאכותית (Google Gemini)
-* `!שאל [שאלה]` - שיחה חופשית ומענה לשאלות מבוסס AI.
-* `!סכם` - סיכום הודעות וטקסטים ארוכים (עובד ישירות או בתגובה להודעה).
-* `!דמיין [תיאור]` - יצירת פרומפט מקצועי ומפורט באנגלית למחוללי תמונות.
-* `!תרגם [שפה] [טקסט]` - תרגום מדויק לכל שפה מבוקשת.
-
-### 🎬 מדיה והורדות
-* `!יוטיוב [שיר]` - חיפוש והורדת שירים מיוטיוב ישירות כקובץ MP3 מתנגן.
-* `!טיקטוק [קישור]` - הורדת סרטוני TikTok באיכות מקסימלית וללא סימן מים.
-* `!אינסטה [קישור]` - הורדת סרטוני Reels מאינסטגרם.
-* `!חתוך [התחלה] [סיום]` - חיתוך שיר או סרטון בתגובה להודעה (למשל: `!חתוך 00:10 00:40`).
-* `!סטיקר` או `!s` - הפיכת תמונה או סרטון קצר למדבקת WebP שקופה בגודל 512x512.
-* `!פילטר [שחורלבן/נגטיב/טשטוש]` - עיבוד תמונה מהיר בעזרת FFmpeg.
-* `!למי` או `!tofile` - שליחת מדיה כקובץ מסמך לשמירה על האיכות המקורית ללא דחיסה.
-* `!qr [טקסט/קישור]` - מחולל קוד QR איכותי לסריקה.
-
-### 🛠️ כלים ומידע יומי
-* `!מזגאוויר [עיר]` - תחזית מזג אוויר חיה (טמפרטורה, רוח ומצב שמיים).
-* `!חדשות` - 5 מבזקי החדשות החמים ביותר בישראל (Ynet).
-* `!שער` - שערי המרה עדכניים של דולר, אירו, ביטקוין ואת'ריום לשקלים.
-* `!שבת [עיר]` - זמני כניסת ויציאת שבת ושם פרשת השבוע.
-* `!רשימה [הוסף/מחק/הצג/נקה]` - ניהול רשימת קניות או משימות אישית הנשמרת במערכת.
-* `!תזכורת [זמן] [דק/שע/ימ] [הודעה]` - קביעת תזכורות אישיות שנשמרות גם לאחר אתחול הבוט.
-* `!בחר [אפשרות 1, אפשרות 2...]` - גלגל מזל וקבלת החלטות באקראי.
-* `!קיצור [קישור]` - קיצור כתובות ארוכות דרך TinyURL.
-* `!לינק [מספר]` - קישור ישיר לשיחת וואטסאפ ללא שמירת איש קשר.
-* `!מחשבון [תרגיל]` - פתרון ביטויים מתמטיים.
-* `!חיפוש [ערך]` - קישור ישיר לחיפוש בגוגל.
-
-### 🎮 משחקים וקהילה
-* `!בלקג'ק` - משחק קלפים 21 מול הבוט (`!קלף`, `!עמוד`).
-* `!קרב [התקפה/מיוחד/ריפוי]` - קרב RPG תורות מול הבוט עם מד חיים.
-* `!תלוי [אות]` - משחק איש תלוי אינטראקטיבי בעברית.
-* `!חידון` / `!ניחוש [שם]` - חידון אימוג'ים לזיהוי סרטים מפורסמים.
-* `!איקסעיגול [1-9]` - משחק איקס-עיגול מול הבוט.
-* `!טריוויה` / `!תשובה [1-4]` - שאלות טריוויה אמריקאיות.
-* `!קובייה` / `!מטבע` - הטלת קובייה אקראית או הגרלת עץ/פלי.
-* `!בדיחה` / `!ציטוט` / `!הפוך` - בידור מהיר.
-* `!תודה` - הענקת נקודת מוניטין למשתמש אחר בתגובה להודעתו.
-* `!מוניטין` / `!טופ5` - בדיקת ניקוד אישי וטבלת המובילים.
-
-### 👑 מערכת וניהול
-* `!תפריט` - לוח בקרה חכם המחולק ל-5 עמודים (`!1` עד `!5`).
-* `!פינג` - בדיקת מהירות תגובת הבוט (ms).
-* `!אני` - הצגת פרטי החשבון והמזהה שלך.
-* `!ויקיפדיה [ערך]` - שליפת תקציר הערך ישירות מויקיפדיה בעברית.
-* `!שעה` / `!תאריך` - שעון ותאריך מקומיים בישראל.
-* `!סטטוס` - הצגת זמן פעילות ומצב הבוט (לבעלים).
-* `!גרסה` / `!בעלים` - פרטי מפתח ומערכת.
-* `!שנהמצב [self/authorized/public]` - שינוי רמת הגישה לבוט.
-* `!הוסףמורשהגלובלי` / `!הסרמורשהגלובלי` / `!רשימהגלובלית` - ניהול משתמשי VIP.
+The project is built according to the WhatsApp Agent Platform v1 API spec. It includes:
+* Efficient long-polling with precise offset tracking.
+* A built-in message queue that prevents exceeding the rate limit (12 requests per minute).
+* A fast local JSON-based database — no heavy SQL servers required.
+* A fully modular architecture that makes adding new commands easy.
 
 ---
 
-## 📋 דרישות מערכת
+## 🚀 Commands & Features
 
-* Node.js 18 ומעלה
-* FFmpeg (נדרש לעיבוד סטיקרים, חיתוך ופילטרים)
-* Python + yt-dlp (נדרש להורדת שירים וסרטונים)
-* טוקן גישה מתוך WhatsApp (Settings > Agents > Create an agent > Chat info > API key)
-* מפתח API חינמי מ-Google AI Studio עבור Gemini
+### 🧠 AI (Google Gemini)
+* `!שאל [question]` - Free-form AI chat and Q&A.
+* `!סכם` - Summarize long messages and texts (works directly or as a reply).
+* `!דמיין [description]` - Generate a detailed professional English prompt for image generators.
+* `!תרגם [language] [text]` - Accurate translation into any language.
+
+### 🎬 Media & Downloads
+* `!יוטיוב [song]` - Search and download songs from YouTube as playable MP3 files.
+* `!טיקטוק [link]` - Download TikTok videos in max quality, no watermark.
+* `!אינסטה [link]` - Download Instagram Reels.
+* `!חתוך [start] [end]` - Trim a song or video in reply to a message (e.g. `!חתוך 00:10 00:40`).
+* `!סטיקר` or `!s` - Turn a photo or short video into a transparent 512x512 WebP sticker.
+* `!פילטר [שחורלבן/נגטיב/טשטוש]` - Fast image processing with FFmpeg.
+* `!למי` or `!tofile` - Send media as a document to preserve original quality without compression.
+* `!qr [text/link]` - High-quality scannable QR code generator.
+
+### 🛠️ Tools & Daily Info
+* `!מזגאוויר [city]` - Live weather forecast (temperature, wind and sky conditions).
+* `!חדשות` - Top 5 breaking news flashes in Israel (Ynet).
+* `!שער` - Current USD, EUR, Bitcoin and Ethereum rates in shekels.
+* `!שבת [city]` - Shabbat candle-lighting and havdalah times plus the weekly Torah portion.
+* `!רשימה [הוסף/מחק/הצג/נקה]` - Manage a personal shopping or task list, saved persistently.
+* `!תזכורת [time] [דק/שע/ימ] [message]` - Personal reminders that survive bot restarts.
+* `!בחר [option 1, option 2...]` - Random picker / decision wheel.
+* `!קיצור [link]` - Shorten long URLs via TinyURL.
+* `!לינק [number]` - Direct WhatsApp chat link without saving the contact.
+* `!מחשבון [expression]` - Solve math expressions.
+* `!חיפוש [query]` - Direct Google search link.
+
+### 🎮 Games & Community
+* `!בלקג'ק` - Blackjack against the bot (`!קלף`, `!עמוד`).
+* `!קרב [התקפה/מיוחד/ריפוי]` - Turn-based RPG battle against the bot with an HP bar.
+* `!תלוי [letter]` - Interactive Hebrew hangman.
+* `!חידון` / `!ניחוש [name]` - Emoji quiz: guess famous movies.
+* `!איקסעיגול [1-9]` - Tic-tac-toe against the bot.
+* `!טריוויה` / `!תשובה [1-4]` - American-style trivia questions.
+* `!קובייה` / `!מטבע` - Roll a dice or flip a coin.
+* `!בדיחה` / `!ציטוט` / `!הפוך` - Quick fun.
+* `!תודה` - Give a reputation point to another user (reply to their message).
+* `!מוניטין` / `!טופ5` - Personal score and leaderboard.
+
+### 👑 System & Admin
+* `!תפריט` - Smart control panel split across 5 pages (`!1` to `!5`).
+* `!פינג` - Bot response time in ms.
+* `!אני` - Show your account details and ID.
+* `!ויקיפדיה [term]` - Fetch a Hebrew Wikipedia summary.
+* `!שעה` / `!תאריך` - Local Israel time and date.
+* `!סטטוס` - Uptime and bot status (owner only).
+* `!גרסה` / `!בעלים` - Version and developer info.
+* `!שנהמצב [self/authorized/public]` - Change the bot's access level.
+* `!הוסףמורשהגלובלי` / `!הסרמורשהגלובלי` / `!רשימהגלובלית` - Manage VIP users.
 
 ---
 
-## 🛠️ התקנה והרצה
+## 📋 Requirements
 
-### 1. התקנת סביבה ב-Termux:
+* Node.js 18+
+* FFmpeg (needed for stickers, trimming and filters)
+* Python + yt-dlp (needed for song and video downloads)
+* Access token from WhatsApp (Settings > Agents > Create an agent > Chat info > API key)
+* Free API key from Google AI Studio for Gemini
+
+---
+
+## 🛠️ Install & Run
+
+### 1. Set up the environment on Termux:
 ```bash
 pkg update -y && pkg install git nodejs ffmpeg python -y
 pip install yt-dlp
 ```
 
-### 2. שכפול המאגר והתקנת תלויות:
+### 2. Clone the repo and install dependencies:
 ```bash
 git clone https://github.com/meowguck-art/whatsapp-agent-bot.git
 cd whatsapp-agent-bot
 npm install
 ```
 
-### 3. הגדרת קובץ משתני הסביבה (.env):
-צור קובץ בשם `.env` והזן לתוכו:
+### 3. Configure environment variables (.env):
+Create a file named `.env` with:
 ```env
 WA_BASE_URL=https://api.whatsapp.com/agent/v1
 WA_API_TOKEN=your_whatsapp_agent_token_here
@@ -117,65 +117,65 @@ BOT_MODE=public
 POLL_TIMEOUT=15
 ```
 
-### 4. הפעלת הבוט:
+### 4. Start the bot:
 ```bash
 npm start
 ```
 
 ---
 
-## 📁 מבנה התיקיות
+## 📁 Project Structure
 
 ```text
 whatsapp-agent-bot/
-├── .env                      # משתני סביבה ומפתחות סודיים
-├── .gitignore                # מניעת העלאת קבצים רגישים ל-Git
-├── package.json              # הגדרת תלויות והרצה
-├── data.json                 # מסד נתונים מקומי לקבוצות, משחקים ומשימות
+├── .env                      # environment variables and secret keys
+├── .gitignore                # keep sensitive files out of git
+├── package.json              # dependencies and run config
+├── data.json                 # local database for groups, games and tasks
 └── src/
-    ├── index.js              # נקודת כניסה ראשית ולולאת רקע לתזכורות
-    ├── config.js             # טעינת הגדרות סביבה
+    ├── index.js              # main entry point + background reminder loop
+    ├── config.js             # env config loading
     ├── client/
-    │   ├── api.js            # מעטפת HTTP עם תור שמירה על Rate Limits
-    │   └── poller.js         # מנגנון Long-Polling ומעקב Offset
+    │   ├── api.js            # HTTP wrapper with rate-limit queue
+    │   └── poller.js         # long-polling and offset tracking
     ├── services/
-    │   ├── database.js       # ניהול מסד הנתונים
-    │   └── gemini.js         # חיבור ל-Google Gemini
+    │   ├── database.js       # database management
+    │   └── gemini.js         # Google Gemini integration
     ├── middlewares/
-    │   ├── auth.js           # ניהול הרשאות (Self/Authorized/Public)
-    │   └── cooldown.js       # אנטי-ספאם והגבלת קצב
+    │   ├── auth.js           # permissions (Self/Authorized/Public)
+    │   └── cooldown.js       # anti-spam and rate limiting
     ├── handlers/
-    │   ├── commandHandler.js # ניתוב פקודות
-    │   └── messageHandler.js # קליטת הודעות ושמירת היסטוריה
+    │   ├── commandHandler.js # command routing
+    │   └── messageHandler.js # message intake and history
     └── commands/
-        ├── ai.js             # פקודות בינה מלאכותית
-        ├── media.js          # סטיקרים, חיתוך, יוטיוב, טיקטוק, QR
-        ├── tools.js          # מזג אוויר, חדשות, שערים, משימות
-        ├── games.js          # בלקג'ק, קרב, איש תלוי, חידון, טריוויה
-        ├── general.js        # תפריט עמודים, ויקיפדיה, פינג, שבת
-        └── owner.js          # פקודות ניהול
+        ├── ai.js             # AI commands
+        ├── media.js          # stickers, trimming, YouTube, TikTok, QR
+        ├── tools.js          # weather, news, rates, tasks
+        ├── games.js          # blackjack, battle, hangman, quizzes, trivia
+        ├── general.js        # paged menu, Wikipedia, ping, Shabbat times
+        └── owner.js          # admin commands
 ```
 
 ---
 
-## ⚙️ עמידה במפרט הרשמי של WhatsApp Agent Platform
+## ⚙️ WhatsApp Agent Platform Spec Compliance
 
-1. **ניהול קצב שליחה (Rate Limiting):**
-   הפלטפורמה מגבילה ל-12 בקשות בדקה עבור הודעות וסטטוסים. הבוט משתמש בתור פנימי שמרווח את השליחות במרווח של 5.2 שניות, מה שמבטיח עבודה רציפה ללא שגיאות 429.
+1. **Rate limiting:**
+   The platform caps at 12 requests per minute for messages and statuses. The bot uses an internal queue that spaces sends 5.2 seconds apart, ensuring smooth operation with no 429 errors.
 
-2. **מעקב Offset ב-Long Polling:**
-   הבוט שומר את ה-`next_offset` מכל בקשת עדכון, וממשיך לתשאל באותו ה-offset במקרה של קוד 204 (ללא תוכן).
+2. **Offset tracking in long polling:**
+   The bot stores the `next_offset` from every update request and keeps polling at that offset when it gets a 204 (no content).
 
-3. **מזהים אטומים (Opaque Identifiers):**
-   שמירה קפדנית על פורמט המזהים `user:<id>` ו-`agent:<id>` בדיוק כפי שהתקבלו משרתי וואטסאפ.
+3. **Opaque identifiers:**
+   Strictly preserves the `user:<id>` and `agent:<id>` identifier formats exactly as received from WhatsApp's servers.
 
 ---
 
-## 📄 רישיון
+## 📄 License
 
-פרויקט זה מופץ תחת רישיון MIT. חופשי לשימוש, שינוי והפצה.
+This project is distributed under the MIT license. Free to use, modify and distribute.
 
 ---
 <div align="center">
-  <b>נבנה באהבה עבור קהילת המפתחים 🚀</b>
+  <b>Built with love for the developer community 🚀</b>
 </div>
